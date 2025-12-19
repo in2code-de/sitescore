@@ -1,0 +1,77 @@
+{
+	"name": "in2code/sitescore",
+	"description": "Sitescore provides an at-a-glance SEO and content quality dashboard directly in the TYPO3 page module",
+	"keywords": [
+		"typo3",
+		"seo",
+		"geo",
+		"ai",
+		"gemini"
+	],
+	"homepage": "https://github.com/in2code-de/sitescore",
+	"authors": [
+		{
+			"name": "Sandra Pohl",
+			"email": "sandra.pohl@in2code.de",
+			"role": "Product owner",
+			"homepage": "https://www.in2code.de"
+		},
+		{
+			"name": "Alex Kellner",
+			"email": "alexander.kellner@in2code.de",
+			"role": "Technical owner",
+			"homepage": "https://www.in2code.de"
+		}
+	],
+	"type": "typo3-cms-extension",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"php": ">=8.2.0",
+		"typo3/cms-core": "^13.4 || ^14.0"
+	},
+	"require-dev": {
+		"helhum/typo3-console": "^8.2",
+		"typo3/cms-backend": "^13.4",
+		"typo3/cms-belog": "^13.4",
+		"typo3/cms-beuser": "^13.4",
+		"typo3/cms-dashboard": "^13.4",
+		"typo3/cms-extbase": "^13.4",
+		"typo3/cms-extensionmanager": "^13.4",
+		"typo3/cms-filelist": "^13.4",
+		"typo3/cms-fluid": "^13.4",
+		"typo3/cms-fluid-styled-content": "^13.4",
+		"typo3/cms-frontend": "^13.4",
+		"typo3/cms-info": "^13.4",
+		"typo3/cms-install": "^13.4",
+		"typo3/cms-lowlevel": "^13.4",
+		"typo3/cms-rte-ckeditor": "^13.4",
+		"typo3/cms-scheduler": "^13.4",
+		"typo3/cms-setup": "^13.4",
+		"typo3/cms-t3editor": "^13.4",
+		"typo3/cms-tstemplate": "^13.4"
+	},
+	"replace": {
+		"typo3-ter/sitescore": "self.version"
+	},
+	"autoload": {
+		"psr-4": {
+			"In2code\\Sitescore\\": "Classes/"
+		}
+	},
+	"extra": {
+		"typo3/cms": {
+			"cms-package-dir": "{$vendor-dir}/typo3/cms",
+			"web-dir": ".Build/public",
+			"extension-key": "sitescore"
+		}
+	},
+	"config": {
+		"vendor-dir": ".Build/vendor",
+		"bin-dir": ".Build/bin",
+		"sort-packages": true,
+		"allow-plugins": {
+			"typo3/class-alias-loader": true,
+			"typo3/cms-composer-installers": true
+		}
+	}
+}

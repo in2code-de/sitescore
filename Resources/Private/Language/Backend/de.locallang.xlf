@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2026-01-01T12:00:00Z" product-name="sitescore">
+		<header/>
+		<body>
+			<trans-unit id="button.aiImage">
+				<source>Create AI image</source>
+				<target state="translated">KI Bild</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

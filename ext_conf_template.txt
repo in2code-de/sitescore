@@ -1,0 +1,2 @@
+# cat=advanced//100; type=text; label= Gemini API key: Better use env GOOGLE_API_KEY instead
+apiKey =
