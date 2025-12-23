@@ -1,0 +1,17 @@
+#!/bin/bash
+
+## Description: Create a database dump and save it to .ddev/data/db.sql.gz
+## Usage: createdumpfile
+## Example: "ddev createdumpfile"
+
+echo "Creating database dump..."
+
+# Export database to .ddev/data/db.sql.gz
+ddev export-db --file=.ddev/data/db.sql.gz --gzip=true
+
+if [ $? -eq 0 ]; then
+    echo "✓ Database dump successfully created at .ddev/data/db.sql.gz"
+else
+    echo "✗ Error creating database dump"
+    exit 1
+fi
