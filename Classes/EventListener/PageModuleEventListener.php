@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace In2code\Sitescore\EventListener;
 
 use In2code\Sitescore\Events\TemplatePageModuleEvent;
+use In2code\Sitescore\Utility\BackendUserUtility;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Controller\Event\ModifyPageLayoutContentEvent;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
@@ -46,6 +47,7 @@ class PageModuleEventListener
             $view->assignMultiple([
                 'pageId' => $this->getPageIdentifier($event),
                 'event' => $event,
+                'collapsed' => BackendUserUtility::isCollapsed(),
             ] + $eventTemplate->getAdditionialAssignments());
 
             $event->setHeaderContent($view->render('ScoreDashboard') . $event->getHeaderContent());

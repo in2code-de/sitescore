@@ -13,6 +13,9 @@ services:
   In2code\Sitescore\Controller\LoadAnalysisController:
     public: true
 
+  In2code\Sitescore\Controller\ToggleController:
+    public: true
+
   In2code\Sitescore\Domain\Repository\LlmRepository:
     public: true
 

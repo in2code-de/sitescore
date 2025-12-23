@@ -20,6 +20,11 @@ class SitescoreBackend {
       toggleButton.addEventListener('click', () => this.toggleSuggestions(container));
     }
 
+    const collapseButton = container.querySelector('[data-sitescore-action="toggle-collapse"]');
+    if (collapseButton) {
+      collapseButton.addEventListener('click', () => this.toggleCollapse(container));
+    }
+
     // Load existing analysis data on page load
     this.loadExistingAnalysis(container);
   }
@@ -170,6 +175,7 @@ class SitescoreBackend {
     if (!pageId) return;
 
     const resultsEl = container.querySelector('[data-sitescore-results]');
+    const isCollapsed = container.getAttribute('data-collapsed') === 'true';
 
     try {
       const url = TYPO3?.settings?.ajaxUrls?.sitescore_load;
@@ -187,10 +193,63 @@ class SitescoreBackend {
       if (data?.success && data?.hasData) {
         this.renderScores(container, data.scores);
         this.renderSuggestions(container, data.suggestions);
-        resultsEl.style.display = 'block';
+
+        // Only show results if dashboard is not collapsed
+        if (!isCollapsed) {
+          resultsEl.style.display = 'block';
+        }
       }
     } catch (error) {
       console.error('Sitescore: Failed to load existing analysis', error);
+    }
+  }
+
+  async toggleCollapse(container) {
+    const contentEl = container.querySelector('[data-sitescore-content]');
+    const collapseButton = container.querySelector('[data-sitescore-action="toggle-collapse"]');
+
+    if (!contentEl || !collapseButton) {
+      return;
+    }
+
+    // Use data-collapsed attribute as source of truth
+    const isCollapsed = container.getAttribute('data-collapsed') === 'true';
+
+    // Toggle display with !important to override any other styles
+    const newDisplay = isCollapsed ? 'block' : 'none';
+    contentEl.style.setProperty('display', newDisplay, 'important');
+    container.setAttribute('data-collapsed', isCollapsed ? 'false' : 'true');
+
+    // When expanding, check if there are results to show
+    if (isCollapsed) {
+      const resultsEl = container.querySelector('[data-sitescore-results]');
+      const loadingEl = container.querySelector('[data-sitescore-loading]');
+      const errorEl = container.querySelector('[data-sitescore-error]');
+
+      // Check if results have content (gauges with values)
+      const hasResults = resultsEl && resultsEl.querySelector('[data-gauge-value]')?.textContent !== '--';
+
+      if (hasResults) {
+        loadingEl.style.display = 'none';
+        errorEl.style.display = 'none';
+        resultsEl.style.display = 'block';
+      }
+    }
+
+    // Update button title
+    collapseButton.title = isCollapsed ? 'Collapse' : 'Expand';
+
+    // Save state to session
+    try {
+      const url = TYPO3?.settings?.ajaxUrls?.sitescore_toggle;
+      if (!url) {
+        console.error('Sitescore: AJAX route "sitescore_toggle" not available');
+        return;
+      }
+
+      await new AjaxRequest(url).post({ collapsed: !isCollapsed });
+    } catch (error) {
+      console.error('Sitescore: Failed to save collapse state', error);
     }
   }
 }

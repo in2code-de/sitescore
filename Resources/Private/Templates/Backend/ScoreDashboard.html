@@ -1,10 +1,13 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
 
-<div class="sitescore-dashboard" data-sitescore-container data-page-id="{pageId}">
+<div class="sitescore-dashboard" data-sitescore-container data-page-id="{pageId}" data-collapsed="{f:if(condition:collapsed,then:'true',else:'false')}">
     <div class="card mb-4">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h4 class="card-title mb-0">
+                    <button type="button" class="btn btn-link p-0 text-decoration-none me-2" data-sitescore-action="toggle-collapse" title="{f:if(condition:collapsed,then:'Expand',else:'Collapse')}">
+                        <core:icon identifier="{f:if(condition:collapsed,then:'actions-chevron-right',else:'actions-chevron-down')}" size="small" />
+                    </button>
                     <core:icon identifier="actions-system-extension-configure" size="small" />
                     <f:translate key="LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:dashboard.title">Sitescore Analysis</f:translate>
                 </h4>
@@ -14,7 +17,8 @@
                 </button>
             </div>
 
-            <div data-sitescore-loading style="display: none;" class="text-center py-4">
+            <div data-sitescore-content style="display: {f:if(condition:collapsed,then:'none',else:'block')};">
+                <div data-sitescore-loading style="display: none;" class="text-center py-4">
                 <div class="spinner-border text-primary" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>
@@ -108,6 +112,7 @@
                         <!-- Suggestions will be dynamically inserted here -->
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     </div>
