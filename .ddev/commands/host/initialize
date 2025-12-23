@@ -14,6 +14,9 @@ mkdir -p .Build/public/fileadmin
 echo "Importing database"
 ddev import-db --file=.ddev/data/db.sql.gz
 
+echo "Extracting fileadmin files"
+tar -xzf .ddev/data/fileadmin.tar.gz -C .Build/public/
+
 echo "Run 'composer install'"
 ddev composer install
 

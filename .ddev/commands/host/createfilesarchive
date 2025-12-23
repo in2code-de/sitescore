@@ -1,0 +1,24 @@
+#!/bin/bash
+
+## Description: Create an archive of fileadmin files and save it to .ddev/data/fileadmin.tar.gz
+## Usage: createfilesarchive
+## Example: "ddev createfilesarchive"
+
+echo "Creating fileadmin archive..."
+
+# Check if fileadmin directory exists
+if [ ! -d ".Build/public/fileadmin" ]; then
+    echo "✗ Error: .Build/public/fileadmin directory not found"
+    exit 1
+fi
+
+# Create tar.gz archive of fileadmin directory
+tar -czf .ddev/data/fileadmin.tar.gz -C .Build/public fileadmin
+
+if [ $? -eq 0 ]; then
+    echo "✓ Fileadmin archive successfully created at .ddev/data/fileadmin.tar.gz"
+    ls -lh .ddev/data/fileadmin.tar.gz
+else
+    echo "✗ Error creating fileadmin archive"
+    exit 1
+fi
