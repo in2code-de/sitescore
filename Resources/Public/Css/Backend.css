@@ -55,6 +55,34 @@
     color: #495057;
 }
 
+/* Dark mode support */
+[data-theme="dark"] .sitescore-gauge-value {
+    fill: #f8f9fa;
+}
+
+[data-theme="dark"] .sitescore-gauge-label {
+    color: #dee2e6;
+}
+
+[data-theme="dark"] .sitescore-gauge-bg {
+    stroke: #495057;
+}
+
+/* Alternative: Media query for systems with dark mode preference */
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .sitescore-gauge-value {
+        fill: #f8f9fa;
+    }
+
+    html:not([data-theme="light"]) .sitescore-gauge-label {
+        color: #dee2e6;
+    }
+
+    html:not([data-theme="light"]) .sitescore-gauge-bg {
+        stroke: #495057;
+    }
+}
+
 .sitescore-suggestions {
     margin-top: 20px;
 }

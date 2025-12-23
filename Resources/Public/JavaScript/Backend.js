@@ -19,6 +19,9 @@ class SitescoreBackend {
     if (toggleButton) {
       toggleButton.addEventListener('click', () => this.toggleSuggestions(container));
     }
+
+    // Load existing analysis data on page load
+    this.loadExistingAnalysis(container);
   }
 
   async analyzePageClick(container) {
@@ -159,6 +162,35 @@ class SitescoreBackend {
       if (toggleText) {
         toggleText.textContent = 'Show details';
       }
+    }
+  }
+
+  async loadExistingAnalysis(container) {
+    const pageId = parseInt(container.getAttribute('data-page-id') || '0', 10);
+    if (!pageId) return;
+
+    const resultsEl = container.querySelector('[data-sitescore-results]');
+
+    try {
+      const url = TYPO3?.settings?.ajaxUrls?.sitescore_load;
+      if (!url) {
+        console.error('Sitescore: AJAX route "sitescore_load" not available');
+        return;
+      }
+
+      const separator = url.includes('?') ? '&' : '?';
+      const fullUrl = url + separator + 'pageId=' + pageId;
+
+      const response = await new AjaxRequest(fullUrl).get();
+      const data = await response.resolve();
+
+      if (data?.success && data?.hasData) {
+        this.renderScores(container, data.scores);
+        this.renderSuggestions(container, data.suggestions);
+        resultsEl.style.display = 'block';
+      }
+    } catch (error) {
+      console.error('Sitescore: Failed to load existing analysis', error);
     }
   }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace In2code\Sitescore\Controller;
 
+use In2code\Sitescore\Domain\Repository\AnalysisRepository;
 use In2code\Sitescore\Domain\Repository\LlmRepository;
 use In2code\Sitescore\Exception\UnexpectedValueException;
 use In2code\Sitescore\Utility\UrlUtility;
@@ -13,19 +14,19 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 
-class AnalysisController
+class AnalysisController extends AbstractController
 {
-    protected int $pageIdentifier = 0;
 
     public function __construct(
         private readonly LlmRepository $llmRepository,
+        private readonly AnalysisRepository $analysisRepository,
         private readonly RequestFactory $requestFactory,
         private readonly SiteFinder $siteFinder,
     ) {}
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
-        $this->pageIdentifier = (int)($request->getParsedBody()['pageId'] ?? $request->getQueryParams()['pageId'] ?? 0);
+        $this->setPageIdentifier($request);
 
         try {
             if ($this->pageIdentifier <= 0) {
@@ -34,6 +35,14 @@ class AnalysisController
             $html = $this->fetchPageHtml($request);
             $pageTitle = $this->extractPageTitle($html);
             $analysis = $this->llmRepository->analyzePageContent($html, $pageTitle);
+
+            // Persist results
+            $this->analysisRepository->save(
+                $this->pageIdentifier,
+                $analysis['scores'] ?? [],
+                $analysis['suggestions'] ?? []
+            );
+
             return new JsonResponse([
                 'success' => true,
                 'scores' => $analysis['scores'] ?? [],

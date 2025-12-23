@@ -17,7 +17,7 @@ use TYPO3\CMS\Core\View\ViewFactoryInterface;
     identifier: 'sitescore/pagemodule',
     event: ModifyPageLayoutContentEvent::class,
 )]
-class FileControlsEventListener
+class PageModuleEventListener
 {
     public function __construct(
         protected readonly PageRenderer $pageRenderer,

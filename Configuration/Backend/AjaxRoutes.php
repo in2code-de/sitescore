@@ -1,6 +1,7 @@
 <?php
 
 use In2code\Sitescore\Controller\AnalysisController;
+use In2code\Sitescore\Controller\LoadAnalysisController;
 
 return [
     'sitescore_analyze' => [
@@ -8,5 +9,11 @@ return [
         'target' => AnalysisController::class,
         'access' => 'user,group',
         'methods' => ['POST'],
+    ],
+    'sitescore_load' => [
+        'path' => '/sitescore/load',
+        'target' => LoadAnalysisController::class,
+        'access' => 'user,group',
+        'methods' => ['GET'],
     ],
 ];
