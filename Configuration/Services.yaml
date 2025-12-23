@@ -6,3 +6,9 @@ services:
 
   In2code\Sitescore\:
     resource: '../Classes/*'
+
+  In2code\Sitescore\Controller\AnalysisController:
+    public: true
+
+  In2code\Sitescore\Domain\Repository\LlmRepository:
+    public: true

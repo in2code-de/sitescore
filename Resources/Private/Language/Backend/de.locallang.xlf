@@ -3,9 +3,55 @@
 	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2026-01-01T12:00:00Z" product-name="sitescore">
 		<header/>
 		<body>
-			<trans-unit id="button.aiImage">
-				<source>Create AI image</source>
-				<target state="translated">KI Bild</target>
+			<trans-unit id="dashboard.title">
+				<source>Sitescore Analysis</source>
+				<target state="translated">Sitescore Analyse</target>
+			</trans-unit>
+			<trans-unit id="dashboard.analyze">
+				<source>Analyze Page</source>
+				<target state="translated">Seite analysieren</target>
+			</trans-unit>
+			<trans-unit id="dashboard.analyzing">
+				<source>Analyzing page with AI...</source>
+				<target state="translated">Analysiere Seite mit KI...</target>
+			</trans-unit>
+			<trans-unit id="dashboard.error">
+				<source>Error</source>
+				<target state="translated">Fehler</target>
+			</trans-unit>
+
+			<trans-unit id="category.geo">
+				<source>GEO</source>
+				<target state="translated">GEO</target>
+			</trans-unit>
+			<trans-unit id="category.performance">
+				<source>Performance</source>
+				<target state="translated">Performance</target>
+			</trans-unit>
+			<trans-unit id="category.semantics">
+				<source>Semantics</source>
+				<target state="translated">Semantik</target>
+			</trans-unit>
+			<trans-unit id="category.keywords">
+				<source>Keyword Optimization</source>
+				<target state="translated">Keyword Optimierung</target>
+			</trans-unit>
+			<trans-unit id="category.marketing">
+				<source>Online Marketing</source>
+				<target state="translated">Online Marketing</target>
+			</trans-unit>
+
+			<trans-unit id="suggestions.title">
+				<source>Suggestions</source>
+				<target state="translated">Empfehlungen</target>
+			</trans-unit>
+			<trans-unit id="suggestions.show">
+				<source>Show details</source>
+				<target state="translated">Zeige Details</target>
+			</trans-unit>
+			<trans-unit id="suggestions.hide">
+				<source>Hide details</source>
+				<target state="translated">Verberge Details</target>
 			</trans-unit>
 		</body>
 	</file>

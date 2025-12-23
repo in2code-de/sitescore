@@ -1,0 +1,94 @@
+.sitescore-dashboard {
+    margin-bottom: 20px;
+}
+
+.sitescore-gauge {
+    text-align: center;
+    padding: 10px;
+}
+
+.sitescore-gauge-svg {
+    width: 120px;
+    height: 120px;
+    transform: rotate(-90deg);
+}
+
+.sitescore-gauge-bg {
+    fill: none;
+    stroke: #e9ecef;
+    stroke-width: 8;
+}
+
+.sitescore-gauge-progress {
+    fill: none;
+    stroke-width: 8;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1s ease, stroke 0.3s ease;
+}
+
+.sitescore-gauge-progress.score-high {
+    stroke: #28a745;
+}
+
+.sitescore-gauge-progress.score-medium {
+    stroke: #ffc107;
+}
+
+.sitescore-gauge-progress.score-low {
+    stroke: #dc3545;
+}
+
+.sitescore-gauge-value {
+    font-size: 20px;
+    font-weight: bold;
+    fill: #212529;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    transform: rotate(90deg);
+    transform-origin: center;
+}
+
+.sitescore-gauge-label {
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #495057;
+}
+
+.sitescore-suggestions {
+    margin-top: 20px;
+}
+
+.sitescore-suggestions-list {
+    margin-top: 10px;
+}
+
+.sitescore-suggestions-list .list-group-item {
+    border-left: 3px solid transparent;
+}
+
+.sitescore-suggestions-list .list-group-item:has(span[style*="28a745"]) {
+    border-left-color: #28a745;
+    background-color: #f8f9fa;
+}
+
+.sitescore-suggestions-list .list-group-item:has(span[style*="ffc107"]) {
+    border-left-color: #ffc107;
+    background-color: #fff9e6;
+}
+
+.sitescore-suggestions-list .list-group-item:has(span[style*="dc3545"]) {
+    border-left-color: #dc3545;
+    background-color: #fff5f5;
+}
+
+@media (max-width: 768px) {
+    .sitescore-gauge-svg {
+        width: 100px;
+        height: 100px;
+    }
+
+    .sitescore-gauge-value {
+        font-size: 18px;
+    }
+}

@@ -3,8 +3,43 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2026-01-01T12:00:00Z" product-name="sitescore">
 		<header/>
 		<body>
-			<trans-unit id="button.aiImage">
-				<source>Create AI image</source>
+			<trans-unit id="dashboard.title">
+				<source>Sitescore Analysis</source>
+			</trans-unit>
+			<trans-unit id="dashboard.analyze">
+				<source>Analyze Page</source>
+			</trans-unit>
+			<trans-unit id="dashboard.analyzing">
+				<source>Analyzing page with AI...</source>
+			</trans-unit>
+			<trans-unit id="dashboard.error">
+				<source>Error</source>
+			</trans-unit>
+
+			<trans-unit id="category.geo">
+				<source>GEO</source>
+			</trans-unit>
+			<trans-unit id="category.performance">
+				<source>Performance</source>
+			</trans-unit>
+			<trans-unit id="category.semantics">
+				<source>Semantics</source>
+			</trans-unit>
+			<trans-unit id="category.keywords">
+				<source>Keyword Optimization</source>
+			</trans-unit>
+			<trans-unit id="category.marketing">
+				<source>Online Marketing</source>
+			</trans-unit>
+
+			<trans-unit id="suggestions.title">
+				<source>Suggestions</source>
+			</trans-unit>
+			<trans-unit id="suggestions.show">
+				<source>Show details</source>
+			</trans-unit>
+			<trans-unit id="suggestions.hide">
+				<source>Hide details</source>
 			</trans-unit>
 		</body>
 	</file>
