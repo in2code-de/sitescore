@@ -58,4 +58,10 @@ class AnalysisRepository
             ]
         );
     }
+
+    public function truncate(): void
+    {
+        $connection = $this->connectionPool->getConnectionForTable(self::TABLE_NAME);
+        $connection->truncate(self::TABLE_NAME);
+    }
 }
