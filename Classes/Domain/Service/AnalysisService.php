@@ -11,6 +11,8 @@ use In2code\Sitescore\Exception\CurlException;
 use In2code\Sitescore\Exception\UnexpectedValueException;
 use In2code\Sitescore\Utility\UrlUtility;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 
@@ -21,6 +23,7 @@ final class AnalysisService
         readonly private AnalysisRepository $analysisRepository,
         readonly private RequestFactory $requestFactory,
         readonly private SiteFinder $siteFinder,
+        readonly private ConnectionPool $connectionPool,
     ) {}
 
     public function analyzePage(int $pageId, int $languageId = 0, ?ServerRequestInterface $request = null): array
@@ -31,7 +34,8 @@ final class AnalysisService
 
         $html = $this->fetchPageHtml($pageId, $languageId, $request);
         $pageTitle = $this->extractPageTitle($html);
-        $analysis = $this->llmRepository->analyzePageContent($html, $pageTitle);
+        $keyword = $this->getKeywordForPage($pageId, $languageId);
+        $analysis = $this->llmRepository->analyzePageContent($html, $pageTitle, $keyword);
 
         $scores = $analysis['scores'] ?? [];
         $suggestions = $analysis['suggestions'] ?? [];
@@ -62,6 +66,28 @@ final class AnalysisService
             return html_entity_decode(strip_tags($matches[1]), ENT_QUOTES | ENT_HTML5, 'UTF-8');
         }
         return 'Unknown';
+    }
+
+    private function getKeywordForPage(int $pageId, int $languageId): string
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
+        $query = $queryBuilder
+            ->select('tx_sitescore_keyword')
+            ->from('pages');
+
+        if ($languageId === 0) {
+            $query->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT))
+            );
+        } else {
+            $query->where(
+                $queryBuilder->expr()->eq('l10n_parent', $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT))
+            );
+        }
+
+        $result = $query->executeQuery()->fetchAssociative();
+        return trim((string)($result['tx_sitescore_keyword'] ?? ''));
     }
 
     private function getPageUrl(int $pageId, int $languageId, ?ServerRequestInterface $request): string

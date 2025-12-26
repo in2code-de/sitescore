@@ -34,9 +34,9 @@ class GeminiRepository extends AbstractRepository implements RepositoryInterface
         return $this->apiUrl . $this->model;
     }
 
-    public function getOptions(string $html, string $pageTitle): array
+    public function getOptions(string $html, string $pageTitle, string $keyword): array
     {
-        $prompt = $this->getPrompt($html, $pageTitle);
+        $prompt = $this->getPrompt($html, $pageTitle, $keyword);
         $payload = [
             'contents' => [
                 [

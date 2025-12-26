@@ -17,7 +17,7 @@
 			</trans-unit>
 
 			<trans-unit id="category.geo">
-				<source>GEO</source>
+				<source>GEO &amp; SEO</source>
 			</trans-unit>
 			<trans-unit id="category.performance">
 				<source>Performance</source>
@@ -40,6 +40,10 @@
 			</trans-unit>
 			<trans-unit id="suggestions.hide">
 				<source>Hide details</source>
+			</trans-unit>
+
+			<trans-unit id="pages.tx_sitescore_keyword">
+				<source>SEO Keyword</source>
 			</trans-unit>
 		</body>
 	</file>

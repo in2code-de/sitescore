@@ -33,9 +33,9 @@ class MistralRepository implements RepositoryInterface
         return $this->apiUrl;
     }
 
-    public function getOptions(string $html, string $pageTitle): array
+    public function getOptions(string $html, string $pageTitle, string $keyword): array
     {
-        $prompt = $this->getPrompt($html, $pageTitle);
+        $prompt = $this->getPrompt($html, $pageTitle, $keyword);
 
         return [
             'headers' => [
@@ -56,18 +56,18 @@ class MistralRepository implements RepositoryInterface
         ];
     }
 
-    public function analyzePageContent(string $html, string $pageTitle): array
+    public function analyzePageContent(string $html, string $pageTitle, string $keyword): array
     {
         $this->checkApiKey();
-        return $this->generateAnalysis($html, $pageTitle);
+        return $this->generateAnalysis($html, $pageTitle, $keyword);
     }
 
-    protected function generateAnalysis(string $html, string $pageTitle): array
+    protected function generateAnalysis(string $html, string $pageTitle, string $keyword): array
     {
         $response = $this->requestFactory->request(
             $this->getApiUrl(),
             'POST',
-            $this->getOptions($html, $pageTitle)
+            $this->getOptions($html, $pageTitle, $keyword)
         );
 
         if ($response->getStatusCode() !== 200) {
@@ -104,20 +104,26 @@ class MistralRepository implements RepositoryInterface
         return $data;
     }
 
-    protected function getPrompt(string $html, string $pageTitle): string
+    protected function getPrompt(string $html, string $pageTitle, string $keyword): string
     {
+        $keywordInfo = $keyword !== ''
+            ? "**Target Keyword**: {$keyword}\n\nPlease analyze how well this keyword is optimized throughout the page (in title, headings, meta description, and content)."
+            : "**Target Keyword**: Not specified\n\n**IMPORTANT**: Set the 'keywords' score to 0 because no target keyword was provided for this page.";
+
         return <<<PROMPT
 Analyze the following HTML code of a webpage and provide a rating in the following categories (scale 0-100):
 
 1. **GEO** (Geolocation/Local SEO): Meta tags for location, structured data for local businesses
 2. **Performance**: Page structure, image optimization, CSS/JS inclusion
 3. **Semantics**: Correct HTML5 semantics, heading hierarchy, ARIA labels
-4. **Keyword Optimization**: Title tag, meta description, headings, content structure
+4. **Keyword Optimization**: Title tag, meta description, headings, content structure (check optimization for the target keyword)
 5. **Online Marketing**: Social media tags (Open Graph, Twitter Cards), structured data
 
 Also provide concrete improvement suggestions with priority (warning or success).
 
 **Page Title**: {$pageTitle}
+
+{$keywordInfo}
 
 **HTML Code**:
 ```html

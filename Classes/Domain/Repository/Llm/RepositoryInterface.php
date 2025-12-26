@@ -8,6 +8,6 @@ interface RepositoryInterface
 {
     public function checkApiKey(): void;
     public function getApiUrl(): string;
-    public function getOptions(string $html, string $pageTitle): array;
-    public function analyzePageContent(string $html, string $pageTitle): array;
+    public function getOptions(string $html, string $pageTitle, string $keyword): array;
+    public function analyzePageContent(string $html, string $pageTitle, string $keyword): array;
 }
