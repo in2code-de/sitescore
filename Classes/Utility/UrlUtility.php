@@ -10,11 +10,16 @@ class UrlUtility
 {
     public static function makeAbsoluteWithCurrentDomain(string $url, RequestInterface $request): string
     {
-        if (preg_match('~^https?://~', $url) === 0) {
+        if (self::isAbsoluteUrl($url) === false) {
             $baseUri = $request->getAttribute('normalizedParams')?->getSiteUrl()
                 ?? (string)$request->getUri()->withPath('')->withQuery('')->withFragment('');
             $url = rtrim($baseUri, '/') . '/' . ltrim($url, '/');
         }
         return $url;
+    }
+
+    public static function isAbsoluteUrl(string $url): bool
+    {
+        return preg_match('~^https?://~', $url) === 1;
     }
 }

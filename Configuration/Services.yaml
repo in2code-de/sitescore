@@ -19,6 +19,9 @@ services:
   In2code\Sitescore\Domain\Repository\AnalysisRepository:
     public: true
 
+  In2code\Sitescore\Domain\Service\AnalysisService:
+    public: true
+
   In2code\Sitescore\Domain\Repository\Llm\:
     resource: '../Classes/Domain/Repository/Llm/*.php'
     exclude: '../Classes/Domain/Repository/Llm/{AbstractRepository.php,RepositoryInterface.php}'

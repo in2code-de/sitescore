@@ -1,4 +1,4 @@
-base: /
+base: https://sitescore.ddev.site/
 errorHandling: {  }
 languages:
   -
