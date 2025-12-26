@@ -16,8 +16,15 @@ services:
   In2code\Sitescore\Controller\ToggleController:
     public: true
 
-  In2code\Sitescore\Domain\Repository\LlmRepository:
-    public: true
-
   In2code\Sitescore\Domain\Repository\AnalysisRepository:
     public: true
+
+  In2code\Sitescore\Domain\Repository\Llm\:
+    resource: '../Classes/Domain/Repository/Llm/*.php'
+    exclude: '../Classes/Domain/Repository/Llm/{AbstractRepository.php,RepositoryInterface.php}'
+    public: true
+
+  In2code\Sitescore\Domain\Repository\Llm\RepositoryInterface:
+    factory:
+      - '@In2code\Sitescore\Domain\Repository\Llm\LlmRepositoryFactory'
+      - 'create'

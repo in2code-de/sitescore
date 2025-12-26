@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace In2code\Sitescore\Controller;
 
 use In2code\Sitescore\Domain\Repository\AnalysisRepository;
-use In2code\Sitescore\Domain\Repository\LlmRepository;
+use In2code\Sitescore\Domain\Repository\Llm\RepositoryInterface;
 use In2code\Sitescore\Exception\UnexpectedValueException;
 use In2code\Sitescore\Utility\UrlUtility;
 use Psr\Http\Message\ResponseInterface;
@@ -18,7 +18,7 @@ class AnalysisController extends AbstractController
 {
 
     public function __construct(
-        private readonly LlmRepository $llmRepository,
+        private readonly RepositoryInterface $llmRepository,
         private readonly AnalysisRepository $analysisRepository,
         private readonly RequestFactory $requestFactory,
         private readonly SiteFinder $siteFinder,
