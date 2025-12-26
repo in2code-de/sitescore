@@ -19,14 +19,15 @@ class AnalysisRepository
         private readonly ConnectionPool $connectionPool,
     ) {}
 
-    public function findByPageIdentifier(int $pageIdentifier): ?array
+    public function findByPageIdentifier(int $pageIdentifier, int $languageId = 0): ?array
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
         $row = $queryBuilder
             ->select('*')
             ->from(self::TABLE_NAME)
             ->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageIdentifier, Connection::PARAM_INT))
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageIdentifier, Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT))
             )
             ->orderBy('crdate', 'DESC')
             ->setMaxResults(1)
@@ -44,14 +45,21 @@ class AnalysisRepository
         ];
     }
 
-    public function save(int $pageIdentifier, array $scores, array $suggestions): void
+    public function save(int $pageIdentifier, array $scores, array $suggestions, int $languageId = 0): void
     {
         $connection = $this->connectionPool->getConnectionForTable(self::TABLE_NAME);
-        $connection->delete(self::TABLE_NAME, ['pid' => $pageIdentifier]);
+        $connection->delete(
+            self::TABLE_NAME,
+            [
+                'pid' => $pageIdentifier,
+                'sys_language_uid' => $languageId,
+            ]
+        );
         $connection->insert(
             self::TABLE_NAME,
             [
                 'pid' => $pageIdentifier,
+                'sys_language_uid' => $languageId,
                 'scores' => json_encode($scores),
                 'suggestions' => json_encode($suggestions),
                 'crdate' => time(),

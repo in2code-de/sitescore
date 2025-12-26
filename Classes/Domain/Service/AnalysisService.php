@@ -23,31 +23,32 @@ final class AnalysisService
         readonly private SiteFinder $siteFinder,
     ) {}
 
-    public function analyzePage(int $pageId, ?ServerRequestInterface $request = null): array
+    public function analyzePage(int $pageId, int $languageId = 0, ?ServerRequestInterface $request = null): array
     {
         if ($pageId <= 0) {
             throw new UnexpectedValueException('No valid page identifier provided', 1766489924);
         }
 
-        $html = $this->fetchPageHtml($pageId, $request);
+        $html = $this->fetchPageHtml($pageId, $languageId, $request);
         $pageTitle = $this->extractPageTitle($html);
         $analysis = $this->llmRepository->analyzePageContent($html, $pageTitle);
 
         $scores = $analysis['scores'] ?? [];
         $suggestions = $analysis['suggestions'] ?? [];
 
-        $this->analysisRepository->save($pageId, $scores, $suggestions);
+        $this->analysisRepository->save($pageId, $scores, $suggestions, $languageId);
 
         return [
             'scores' => $scores,
             'suggestions' => $suggestions,
             'pageTitle' => $pageTitle,
+            'languageId' => $languageId,
         ];
     }
 
-    private function fetchPageHtml(int $pageId, ?ServerRequestInterface $request): string
+    private function fetchPageHtml(int $pageId, int $languageId, ?ServerRequestInterface $request): string
     {
-        $url = $this->getPageUrl($pageId, $request);
+        $url = $this->getPageUrl($pageId, $languageId, $request);
         $response = $this->requestFactory->request($url);
         if ($response->getStatusCode() !== 200) {
             throw new CurlException('Could not fetch page HTML: HTTP ' . $response->getStatusCode(), 1735042810);
@@ -63,10 +64,11 @@ final class AnalysisService
         return 'Unknown';
     }
 
-    private function getPageUrl(int $pageId, ?ServerRequestInterface $request): string
+    private function getPageUrl(int $pageId, int $languageId, ?ServerRequestInterface $request): string
     {
         $site = $this->siteFinder->getSiteByPageId($pageId);
-        $uri = $site->getRouter()->generateUri($pageId);
+        $language = $site->getLanguageById($languageId);
+        $uri = $site->getRouter()->generateUri($pageId, ['_language' => $language]);
         $url = $uri->__toString();
         if ($request !== null) {
             $url = UrlUtility::makeAbsoluteWithCurrentDomain($url, $request);

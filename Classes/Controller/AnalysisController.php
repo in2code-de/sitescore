@@ -9,6 +9,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\JsonResponse;
 
+/**
+ * Class AnalysisController
+ * to do a fresh new analysis
+ */
 class AnalysisController extends AbstractController
 {
     public function __construct(
@@ -20,12 +24,17 @@ class AnalysisController extends AbstractController
         $this->setPageIdentifier($request);
 
         try {
-            $result = $this->analysisService->analyzePage($this->pageIdentifier, $request);
+            $result = $this->analysisService->analyzePage(
+                $this->pageIdentifier,
+                (int)($request->getQueryParams()['language'] ?? 0),
+                $request
+            );
 
             return new JsonResponse([
                 'success' => true,
                 'scores' => $result['scores'],
                 'suggestions' => $result['suggestions'],
+                'languageId' => $result['languageId'],
             ]);
         } catch (\Throwable $exception) {
             return new JsonResponse([

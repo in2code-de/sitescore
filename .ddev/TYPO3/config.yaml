@@ -2,10 +2,18 @@ base: https://sitescore.ddev.site/
 errorHandling: {  }
 languages:
   -
-    title: English
+    title: German
     enabled: true
     languageId: 0
     base: /
+    locale: de_DE.UTF-8
+    navigationTitle: Deutsch
+    flag: de
+  -
+    title: English
+    enabled: true
+    languageId: 1
+    base: /en
     locale: en_US.UTF-8
     navigationTitle: English
     flag: us
