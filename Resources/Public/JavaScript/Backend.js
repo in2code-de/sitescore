@@ -5,7 +5,7 @@ export default class SitescoreBackend {
   'use strict';
 
   #containerSelector = '[data-sitescore-container]';
-  #categories = ['geo', 'performance', 'semantics', 'keywords', 'marketing'];
+  #categories = ['geo', 'performance', 'semantics', 'keywords', 'accessibility'];
   #gaugeRadius = 40;
 
   constructor() {

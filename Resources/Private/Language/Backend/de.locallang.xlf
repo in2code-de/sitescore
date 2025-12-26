@@ -40,6 +40,10 @@
 				<source>Online Marketing</source>
 				<target state="translated">Online Marketing</target>
 			</trans-unit>
+			<trans-unit id="category.accessibility">
+				<source>Accessibility</source>
+				<target state="translated">Barrierefreiheit</target>
+			</trans-unit>
 
 			<trans-unit id="suggestions.title">
 				<source>Suggestions</source>

@@ -113,11 +113,11 @@ class MistralRepository implements RepositoryInterface
         return <<<PROMPT
 Analyze the following HTML code of a webpage and provide a rating in the following categories (scale 0-100):
 
-1. **GEO** (Geolocation/Local SEO): Meta tags for location, structured data for local businesses
+1. **GEO** (Generative Engine Optimization/Search Engine Optimization): Structured and readable content for machines with schema.org tools (e.gl JSON-LD, Microdata, RDFa)
 2. **Performance**: Page structure, image optimization, CSS/JS inclusion
 3. **Semantics**: Correct HTML5 semantics, heading hierarchy, ARIA labels
 4. **Keyword Optimization**: Title tag, meta description, headings, content structure (check optimization for the target keyword)
-5. **Online Marketing**: Social media tags (Open Graph, Twitter Cards), structured data
+5. **Accessibility**: WCAG compliance, keyboard navigation, screen reader support, color contrast, alt texts, form labels
 
 Also provide concrete improvement suggestions with priority (warning or success).
 
@@ -138,7 +138,7 @@ Also provide concrete improvement suggestions with priority (warning or success)
     "performance": 70,
     "semantics": 95,
     "keywords": 60,
-    "marketing": 80
+    "accessibility": 90
   },
   "suggestions": [
     {"type": "warning", "message": "2x H1 found on page"},

@@ -31,6 +31,9 @@
 			<trans-unit id="category.marketing">
 				<source>Online Marketing</source>
 			</trans-unit>
+			<trans-unit id="category.accessibility">
+				<source>Accessibility</source>
+			</trans-unit>
 
 			<trans-unit id="suggestions.title">
 				<source>Suggestions</source>
