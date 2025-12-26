@@ -31,6 +31,7 @@
 	},
 	"require-dev": {
 		"helhum/typo3-console": "^8.2",
+		"in2code/sitescore-test": "@dev",
 		"typo3/cms-backend": "^13.4",
 		"typo3/cms-belog": "^13.4",
 		"typo3/cms-beuser": "^13.4",
@@ -50,6 +51,12 @@
 		"typo3/cms-t3editor": "^13.4",
 		"typo3/cms-tstemplate": "^13.4"
 	},
+	"repositories": [
+		{
+			"type": "path",
+			"url": "packages/sitescore_test"
+		}
+	],
 	"replace": {
 		"typo3-ter/sitescore": "self.version"
 	},
