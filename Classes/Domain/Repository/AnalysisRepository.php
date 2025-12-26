@@ -7,6 +7,10 @@ namespace In2code\Sitescore\Domain\Repository;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 
+/**
+ * Class AnalysisRepository
+ * to store data from AI to local database for caching
+ */
 class AnalysisRepository
 {
     private const TABLE_NAME = 'tx_sitescore_analysis';
