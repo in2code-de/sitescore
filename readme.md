@@ -228,7 +228,7 @@ Your custom LLM provider will now be used for all content analysis instead of Go
 
 | Version | Date       | State | Description                                                              |
 |---------|------------|-------|--------------------------------------------------------------------------|
-| 1.0.0   | 2025-01-02 | Task  | Initial release with Google Gemini integration and 5 analysis categories |
+| 1.0.0   | 2025-12-30 | Task  | Initial release with Google Gemini integration and 5 analysis categories |
 
 ## Contribution with DDEV
 
