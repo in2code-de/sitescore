@@ -9,7 +9,6 @@ use In2code\Sitescore\Utility\BackendUserUtility;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Controller\Event\ModifyPageLayoutContentEvent;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
@@ -60,13 +59,14 @@ class PageModuleEventListener
         return (int)($event->getRequest()->getParsedBody()['id'] ?? $event->getRequest()->getQueryParams()['id'] ?? 0);
     }
 
+    /**
+     * Get selected language from backend user for page module
+     *
+     * @param ModifyPageLayoutContentEvent $event
+     * @return int
+     */
     protected function getLanguageIdentifier(ModifyPageLayoutContentEvent $event): int
     {
-        $language = (int)($event->getRequest()->getQueryParams()['languages'][0] ?? 0);
-        // Todo: Can be dropped once TYPO3 13 support is dropped
-        if ((new Typo3Version())->getMajorVersion() === 13) {
-            $language = (int)($event->getRequest()->getQueryParams()['language'] ?? 0);
-        }
-        return $language;
+        return (int)(BackendUserUtility::getBackendUser()->getModuleData('web_layout')['language'] ?? 0);
     }
 }
