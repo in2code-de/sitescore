@@ -9,7 +9,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 
 /**
  * Class AnalysisRepository
- * to store data from AI to local database for caching
+ * to store data from AI to a local database for caching
  */
 class AnalysisRepository
 {

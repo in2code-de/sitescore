@@ -1,5 +1,11 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
 
+<f:be.pageRenderer includeJavaScriptModules="{
+    0: '@in2code/sitescore/Backend.js',
+}" includeCssFiles="{
+    0: '{f:uri.resource(path:\'Css/Backend.css\', extensionName: \'sitescore\')}'
+}"/>
+
 <div class="sitescore-dashboard" data-sitescore-container data-page-id="{pageId}" data-collapsed="{f:if(condition:collapsed,then:'true',else:'false')}">
     <div class="card mb-4">
         <div class="card-body">
@@ -109,7 +115,7 @@
                         </button>
                     </div>
                     <div class="sitescore-suggestions-list" data-sitescore-suggestions-list style="display: none;">
-                        <!-- Suggestions will be dynamically inserted here -->
+                        <f:comment><!-- Suggestions will be dynamically inserted here --></f:comment>
                     </div>
                 </div>
             </div>

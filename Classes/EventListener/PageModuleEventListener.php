@@ -9,7 +9,6 @@ use In2code\Sitescore\Utility\BackendUserUtility;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Controller\Event\ModifyPageLayoutContentEvent;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
-use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
@@ -30,11 +29,6 @@ class PageModuleEventListener
     public function __invoke(ModifyPageLayoutContentEvent $event): void
     {
         if ($this->isActivated($event)) {
-            $this->pageRenderer->addCssFile('EXT:sitescore/Resources/Public/Css/Backend.css');
-            $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
-                JavaScriptModuleInstruction::create('@in2code/sitescore/Backend.js')
-            );
-
             /** @var TemplatePageModuleEvent $eventTemplate */
             $eventTemplate = $this->eventDispatcher->dispatch(new TemplatePageModuleEvent());
             $viewFactoryData = new ViewFactoryData(
