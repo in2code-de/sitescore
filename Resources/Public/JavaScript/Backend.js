@@ -274,7 +274,7 @@ export default class SitescoreBackend {
     loadingEl.style.display = 'none';
     errorEl.style.display = 'block';
     const errorMsg = errorEl.querySelector('[data-sitescore-error-message]');
-    errorMsg && (errorMsg.textContent = errorMessage || 'Unknown error');
+    errorMsg && (errorMsg.textContent = errorMessage || 'Page could not be analyzed');
   };
 
   #showResultsIfAvailable(container) {
