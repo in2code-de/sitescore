@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace In2code\SitescoreTest\Domain\Repository\Llm;
 
+use In2code\Sitescore\Domain\Repository\Llm\AbstractRepository;
 use In2code\Sitescore\Domain\Repository\Llm\RepositoryInterface;
 use In2code\Sitescore\Exception\ApiException;
 use In2code\Sitescore\Exception\ConfigurationException;
 use TYPO3\CMS\Core\Http\RequestFactory;
 
-class MistralRepository implements RepositoryInterface
+class MistralRepository extends AbstractRepository implements RepositoryInterface
 {
     private string $apiKey = '';
     private string $apiUrl = 'https://api.mistral.ai/v1/chat/completions';
@@ -102,53 +103,5 @@ class MistralRepository implements RepositoryInterface
         }
 
         return $data;
-    }
-
-    protected function getPrompt(string $html, string $pageTitle, string $keyword): string
-    {
-        $keywordInfo = $keyword !== ''
-            ? "**Target Keyword**: {$keyword}\n\nPlease analyze how well this keyword is optimized throughout the page (in title, headings, meta description, and content)."
-            : "**Target Keyword**: Not specified\n\n**IMPORTANT**: Set the 'keywords' score to 0 because no target keyword was provided for this page.";
-
-        return <<<PROMPT
-Analyze the following HTML code of a webpage and provide a rating in the following categories (scale 0-100):
-
-1. **GEO** (Generative Engine Optimization/Search Engine Optimization): Structured and readable content for machines with schema.org tools (e.gl JSON-LD, Microdata, RDFa)
-2. **Performance**: Page structure, image optimization, CSS/JS inclusion
-3. **Semantics**: Correct HTML5 semantics, heading hierarchy, ARIA labels
-4. **Keyword Optimization**: Title tag, meta description, headings, content structure (check optimization for the target keyword)
-5. **Accessibility**: WCAG compliance, keyboard navigation, screen reader support, color contrast, alt texts, form labels
-
-Also provide concrete improvement suggestions with priority (warning or success).
-
-**Page Title**: {$pageTitle}
-
-{$keywordInfo}
-
-**HTML Code**:
-```html
-{$html}
-```
-
-**Response Format** (JSON only, no explanations):
-```json
-{
-  "scores": {
-    "geo": 85,
-    "performance": 70,
-    "semantics": 95,
-    "keywords": 60,
-    "accessibility": 90
-  },
-  "suggestions": [
-    {"type": "warning", "message": "2x H1 found on page"},
-    {"type": "success", "message": "Meta description is optimal"},
-    {"type": "warning", "message": "Alt text missing for 3 images"}
-  ]
-}
-```
-
-IMPORTANT: Respond ONLY with valid JSON in the exact format shown above. Do not include any additional text or explanations.
-PROMPT;
     }
 }
