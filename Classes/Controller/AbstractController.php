@@ -14,4 +14,13 @@ abstract class AbstractController
     {
         $this->pageIdentifier = (int)($request->getParsedBody()['pageId'] ?? $request->getQueryParams()['pageId'] ?? 0);
     }
+
+    protected function getLanguageId(ServerRequestInterface $request): int
+    {
+        $languageId = (int)($request->getQueryParams()['language'] ?? 0);
+        if ($languageId <= 0) {
+            $languageId = 0;
+        }
+        return $languageId;
+    }
 }

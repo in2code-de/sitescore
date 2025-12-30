@@ -22,14 +22,8 @@ class AnalysisController extends AbstractController
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
         $this->setPageIdentifier($request);
-
         try {
-            $result = $this->analysisService->analyzePage(
-                $this->pageIdentifier,
-                (int)($request->getQueryParams()['language'] ?? 0),
-                $request
-            );
-
+            $result = $this->analysisService->analyzePage($this->pageIdentifier, $this->getLanguageId($request), $request);
             return new JsonResponse([
                 'success' => true,
                 'scores' => $result['scores'],

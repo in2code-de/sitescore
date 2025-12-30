@@ -66,7 +66,7 @@ export default class SitescoreBackend {
         throw new Error('AJAX route "sitescore_analyze" not available');
       }
 
-      const language = this.#getLanguageFromUrl();
+      const language = this.#getLanguage();
       const separator = url.includes('?') ? '&' : '?';
       const response = await new AjaxRequest(url + separator + 'language=' + language).post({pageId});
       const data = await response.resolve();
@@ -96,7 +96,7 @@ export default class SitescoreBackend {
         return;
       }
 
-      const language = this.#getLanguageFromUrl();
+      const language = this.#getLanguage();
       const separator = url.includes('?') ? '&' : '?';
       const response = await new AjaxRequest(url + separator + 'pageId=' + pageId + '&language=' + language).get();
       const data = await response.resolve();
@@ -250,9 +250,9 @@ export default class SitescoreBackend {
     }
   };
 
-  #getLanguageFromUrl() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return parseInt(urlParams.get('language') || urlParams.get('L') || '0', 10);
+  #getLanguage() {
+    const languageContainer = document.querySelector('[data-language-id]');
+    return languageContainer?.getAttribute('data-language-id') || 0;
   };
 
   #showLoading(loadingEl, errorEl, resultsEl) {

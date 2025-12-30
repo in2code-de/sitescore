@@ -11,7 +11,7 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 
 /**
  * Class LoadAnalysisController
- * to load an existing analysis from cache table
+ * to load an existing analysis from a cache table
  */
 class LoadAnalysisController extends AbstractController
 {
@@ -36,14 +36,5 @@ class LoadAnalysisController extends AbstractController
             'suggestions' => $analysis['suggestions'] ?? [],
             'analyzed_at' => $analysis['analyzed_at'] ?? 0,
         ]);
-    }
-
-    private function getLanguageId(ServerRequestInterface $request): int
-    {
-        $languageId = (int)($request->getQueryParams()['language'] ?? 0);
-        if ($languageId <= 0) {
-            $languageId = 0;
-        }
-        return $languageId;
     }
 }
