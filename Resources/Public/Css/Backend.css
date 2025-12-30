@@ -2,6 +2,15 @@
     margin-bottom: 20px;
 }
 
+/* Bootstrap collapse icon rotation */
+button[data-bs-toggle="collapse"] .t3js-icon {
+    transition: transform 0.2s ease-in-out;
+}
+
+button[data-bs-toggle="collapse"].collapsed .t3js-icon {
+    transform: rotate(-90deg);
+}
+
 .sitescore-gauge {
     text-align: center;
     padding: 10px;

@@ -57,6 +57,10 @@
 				<source>Hide details</source>
 				<target state="translated">Verberge Details</target>
 			</trans-unit>
+			<trans-unit id="suggestions.none">
+				<source>No suggestions available.</source>
+				<target state="translated">Keine Empfehlungen verfügbar.</target>
+			</trans-unit>
 
 			<trans-unit id="pages.tx_sitescore_keyword">
 				<source>SEO Keyword</source>

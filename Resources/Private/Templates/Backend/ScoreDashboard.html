@@ -1,127 +1,143 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <f:be.pageRenderer includeJavaScriptModules="{
-    0: '@in2code/sitescore/Backend.js',
+    0: 'bootstrap',
+    1: '@in2code/sitescore/Backend.js',
 }" includeCssFiles="{
     0: '{f:uri.resource(path:\'Css/Backend.css\', extensionName: \'sitescore\')}'
 }"/>
 
-<div class="sitescore-dashboard" data-sitescore-container data-page-id="{pageId}" data-collapsed="{f:if(condition:collapsed,then:'true',else:'false')}">
+<div class="sitescore-dashboard" data-sitescore-container data-page-id="{pageId}">
     <div class="card mb-4">
         <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex justify-content-between align-items-center">
                 <h4 class="card-title mb-0">
-                    <button type="button" class="btn btn-link p-0 text-decoration-none me-2" data-sitescore-action="toggle-collapse" title="{f:if(condition:collapsed,then:'Expand',else:'Collapse')}">
-                        <core:icon identifier="{f:if(condition:collapsed,then:'actions-chevron-right',else:'actions-chevron-down')}" size="small" />
+                    <button type="button" aria-expanded="{f:if(condition:collapsed,then:'false',else:'true')}" data-bs-toggle="collapse" data-bs-target="#sitescore-content" class="btn btn-link p-0 text-decoration-none me-2{f:if(condition:collapsed,then:' collapsed')}" title="{f:if(condition:collapsed,then:'Expand',else:'Collapse')}" data-sitescore-action="toggle-collapse" style="pointer-events: none;">
+                        <core:icon identifier="actions-system-extension-configure" size="small" />
+                        <f:translate key="LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:dashboard.title">Sitescore Analysis</f:translate>
+                        <span data-sitescore-toggle-icon style="display: none;">
+                            <core:icon identifier="actions-chevron-down" size="small" />
+                        </span>
                     </button>
-                    <core:icon identifier="actions-system-extension-configure" size="small" />
-                    <f:translate key="LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:dashboard.title">Sitescore Analysis</f:translate>
                 </h4>
+
                 <button type="button" class="btn btn-primary btn-sm" data-sitescore-action="analyze">
                     <core:icon identifier="actions-refresh" size="small" />
                     <f:translate key="LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:dashboard.analyze">Analyze</f:translate>
                 </button>
             </div>
 
-            <div data-sitescore-content style="display: {f:if(condition:collapsed,then:'none',else:'block')};">
-                <div data-sitescore-loading style="display: none;" class="text-center py-4">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-                <p class="mt-2"><f:translate key="LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:dashboard.analyzing">Analyzing page...</f:translate></p>
-            </div>
-
-            <div data-sitescore-error style="display: none;" class="alert alert-danger">
-                <strong><f:translate key="LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:dashboard.error">Error:</f:translate></strong>
-                <span data-sitescore-error-message></span>
-            </div>
-
-            <div data-sitescore-results style="display: none;">
-                <div class="row g-3 mb-4">
-                    <div class="col-md col-6">
-                        <div class="sitescore-gauge" data-sitescore-gauge="geo">
-                            <svg viewBox="0 0 100 100" class="sitescore-gauge-svg">
-                                <circle cx="50" cy="50" r="40" class="sitescore-gauge-bg"></circle>
-                                <circle cx="50" cy="50" r="40" class="sitescore-gauge-progress" data-gauge-circle></circle>
-                                <text x="50" y="50" class="sitescore-gauge-value" data-gauge-value>--</text>
-                            </svg>
-                            <div class="sitescore-gauge-label">
-                                <f:translate key="LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:category.geo">GEO</f:translate>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md col-6">
-                        <div class="sitescore-gauge" data-sitescore-gauge="performance">
-                            <svg viewBox="0 0 100 100" class="sitescore-gauge-svg">
-                                <circle cx="50" cy="50" r="40" class="sitescore-gauge-bg"></circle>
-                                <circle cx="50" cy="50" r="40" class="sitescore-gauge-progress" data-gauge-circle></circle>
-                                <text x="50" y="50" class="sitescore-gauge-value" data-gauge-value>--</text>
-                            </svg>
-                            <div class="sitescore-gauge-label">
-                                <f:translate key="LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:category.performance">Performance</f:translate>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md col-6">
-                        <div class="sitescore-gauge" data-sitescore-gauge="semantics">
-                            <svg viewBox="0 0 100 100" class="sitescore-gauge-svg">
-                                <circle cx="50" cy="50" r="40" class="sitescore-gauge-bg"></circle>
-                                <circle cx="50" cy="50" r="40" class="sitescore-gauge-progress" data-gauge-circle></circle>
-                                <text x="50" y="50" class="sitescore-gauge-value" data-gauge-value>--</text>
-                            </svg>
-                            <div class="sitescore-gauge-label">
-                                <f:translate key="LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:category.semantics">Semantik</f:translate>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md col-6">
-                        <div class="sitescore-gauge" data-sitescore-gauge="keywords">
-                            <svg viewBox="0 0 100 100" class="sitescore-gauge-svg">
-                                <circle cx="50" cy="50" r="40" class="sitescore-gauge-bg"></circle>
-                                <circle cx="50" cy="50" r="40" class="sitescore-gauge-progress" data-gauge-circle></circle>
-                                <text x="50" y="50" class="sitescore-gauge-value" data-gauge-value>--</text>
-                            </svg>
-                            <div class="sitescore-gauge-label">
-                                <f:translate key="LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:category.keywords">Keyword Optimierung</f:translate>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md col-6">
-                        <div class="sitescore-gauge" data-sitescore-gauge="accessibility">
-                            <svg viewBox="0 0 100 100" class="sitescore-gauge-svg">
-                                <circle cx="50" cy="50" r="40" class="sitescore-gauge-bg"></circle>
-                                <circle cx="50" cy="50" r="40" class="sitescore-gauge-progress" data-gauge-circle></circle>
-                                <text x="50" y="50" class="sitescore-gauge-value" data-gauge-value>--</text>
-                            </svg>
-                            <div class="sitescore-gauge-label">
-                                <f:translate key="LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:category.accessibility">Accessibility</f:translate>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="sitescore-suggestions" data-sitescore-suggestions>
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="mb-0">
-                            <f:translate key="LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:suggestions.title">Suggestions</f:translate>
-                        </h5>
-                        <button type="button" class="btn btn-sm btn-link" data-sitescore-toggle-suggestions>
-                            <core:icon identifier="actions-chevron-down" size="small" />
-                            <span data-toggle-text><f:translate key="LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:suggestions.show">Show details</f:translate></span>
-                        </button>
-                    </div>
-                    <div class="sitescore-suggestions-list" data-sitescore-suggestions-list style="display: none;">
-                        <f:comment><!-- Suggestions will be dynamically inserted here --></f:comment>
-                    </div>
-                </div>
-            </div>
-            </div>
+            <f:render section="Content" arguments="{_all}"/>
         </div>
     </div>
 </div>
+
+
+
+<f:section name="Content">
+    <div id="sitescore-content" class="collapse{f:if(condition:collapsed,then:'',else:' show')}" data-sitescore-content>
+        <div data-sitescore-loading style="display: none;" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2"><f:translate key="LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:dashboard.analyzing">Analyzing page...</f:translate></p>
+        </div>
+
+        <div data-sitescore-error style="display: none;" class="alert alert-danger">
+            <strong><f:translate key="LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:dashboard.error">Error:</f:translate></strong>
+            <span data-sitescore-error-message></span>
+        </div>
+
+        <div data-sitescore-results style="display: none;">
+            <div class="row g-3 mb-4 mt-2">
+                <div class="col-md col-6">
+                    <div class="sitescore-gauge" data-sitescore-gauge="geo">
+                        <svg viewBox="0 0 100 100" class="sitescore-gauge-svg">
+                            <circle cx="50" cy="50" r="40" class="sitescore-gauge-bg"></circle>
+                            <circle cx="50" cy="50" r="40" class="sitescore-gauge-progress" data-gauge-circle></circle>
+                            <text x="50" y="50" class="sitescore-gauge-value" data-gauge-value>--</text>
+                        </svg>
+                        <div class="sitescore-gauge-label">
+                            <f:translate key="LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:category.geo">GEO</f:translate>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md col-6">
+                    <div class="sitescore-gauge" data-sitescore-gauge="performance">
+                        <svg viewBox="0 0 100 100" class="sitescore-gauge-svg">
+                            <circle cx="50" cy="50" r="40" class="sitescore-gauge-bg"></circle>
+                            <circle cx="50" cy="50" r="40" class="sitescore-gauge-progress" data-gauge-circle></circle>
+                            <text x="50" y="50" class="sitescore-gauge-value" data-gauge-value>--</text>
+                        </svg>
+                        <div class="sitescore-gauge-label">
+                            <f:translate key="LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:category.performance">Performance</f:translate>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md col-6">
+                    <div class="sitescore-gauge" data-sitescore-gauge="semantics">
+                        <svg viewBox="0 0 100 100" class="sitescore-gauge-svg">
+                            <circle cx="50" cy="50" r="40" class="sitescore-gauge-bg"></circle>
+                            <circle cx="50" cy="50" r="40" class="sitescore-gauge-progress" data-gauge-circle></circle>
+                            <text x="50" y="50" class="sitescore-gauge-value" data-gauge-value>--</text>
+                        </svg>
+                        <div class="sitescore-gauge-label">
+                            <f:translate key="LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:category.semantics">Semantik</f:translate>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md col-6">
+                    <div class="sitescore-gauge" data-sitescore-gauge="keywords">
+                        <svg viewBox="0 0 100 100" class="sitescore-gauge-svg">
+                            <circle cx="50" cy="50" r="40" class="sitescore-gauge-bg"></circle>
+                            <circle cx="50" cy="50" r="40" class="sitescore-gauge-progress" data-gauge-circle></circle>
+                            <text x="50" y="50" class="sitescore-gauge-value" data-gauge-value>--</text>
+                        </svg>
+                        <div class="sitescore-gauge-label">
+                            <f:translate key="LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:category.keywords">Keyword Optimierung</f:translate>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md col-6">
+                    <div class="sitescore-gauge" data-sitescore-gauge="accessibility">
+                        <svg viewBox="0 0 100 100" class="sitescore-gauge-svg">
+                            <circle cx="50" cy="50" r="40" class="sitescore-gauge-bg"></circle>
+                            <circle cx="50" cy="50" r="40" class="sitescore-gauge-progress" data-gauge-circle></circle>
+                            <text x="50" y="50" class="sitescore-gauge-value" data-gauge-value>--</text>
+                        </svg>
+                        <div class="sitescore-gauge-label">
+                            <f:translate key="LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:category.accessibility">Accessibility</f:translate>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <f:render section="Suggestions" arguments="{_all}"/>
+        </div>
+    </div>
+</f:section>
+
+
+
+<f:section name="Suggestions">
+    <div class="sitescore-suggestions" data-sitescore-suggestions
+         data-label-show="{f:translate(key:'LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:suggestions.show')}"
+         data-label-hide="{f:translate(key:'LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:suggestions.hide')}"
+         data-label-none="{f:translate(key:'LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:suggestions.none')}">
+        <button type="button" aria-expanded="false" data-bs-toggle="collapse" data-bs-target="#sitescore-suggestions-list" class="btn btn-secondary mb-3 collapsed" data-sitescore-toggle-suggestions>
+            <span data-toggle-text><f:translate key="LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:suggestions.show">Show details</f:translate></span>
+            <span data-toggle-count></span>
+            <core:icon identifier="actions-chevron-down" size="small" />
+        </button>
+        <div id="sitescore-suggestions-list" class="collapse" data-sitescore-suggestions-list>
+            <f:comment><!-- Suggestions will be dynamically inserted here --></f:comment>
+        </div>
+    </div>
+</f:section>
 
 </html>

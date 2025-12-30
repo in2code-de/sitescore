@@ -24,17 +24,22 @@ export default class SitescoreBackend {
 
   #attachEventListeners(container) {
     const analyzeButton = container.querySelector('[data-sitescore-action="analyze"]');
-    const toggleButton = container.querySelector('[data-sitescore-toggle-suggestions]');
-    const collapseButton = container.querySelector('[data-sitescore-action="toggle-collapse"]');
+    const contentEl = document.getElementById('sitescore-content');
+    const suggestionsEl = document.getElementById('sitescore-suggestions-list');
 
     if (analyzeButton) {
       analyzeButton.addEventListener('click', () => this.#analyzePageClick(container));
     }
-    if (toggleButton) {
-      toggleButton.addEventListener('click', () => this.#toggleSuggestions(container));
+    if (contentEl) {
+      contentEl.addEventListener('hidden.bs.collapse', () => this.#saveCollapseState(true));
+      contentEl.addEventListener('shown.bs.collapse', () => {
+        this.#saveCollapseState(false);
+        this.#showResultsIfAvailable(container);
+      });
     }
-    if (collapseButton) {
-      collapseButton.addEventListener('click', () => this.#toggleCollapse(container));
+    if (suggestionsEl) {
+      suggestionsEl.addEventListener('show.bs.collapse', () => this.#updateSuggestionsButton(container, true));
+      suggestionsEl.addEventListener('hide.bs.collapse', () => this.#updateSuggestionsButton(container, false));
     }
   };
 
@@ -81,7 +86,8 @@ export default class SitescoreBackend {
     }
 
     const resultsEl = container.querySelector('[data-sitescore-results]');
-    const isCollapsed = container.getAttribute('data-collapsed') === 'true';
+    const contentEl = document.getElementById('sitescore-content');
+    const isVisible = contentEl?.classList.contains('show');
 
     try {
       const url = TYPO3?.settings?.ajaxUrls?.sitescore_load;
@@ -98,39 +104,22 @@ export default class SitescoreBackend {
       if (data?.success && data?.hasData) {
         this.#renderScores(container, data.scores);
         this.#renderSuggestions(container, data.suggestions);
-        !isCollapsed && (resultsEl.style.display = 'block');
+        this.#enableCollapseToggle(container);
+        isVisible && (resultsEl.style.display = 'block');
       }
     } catch (error) {
       console.error('Sitescore: Failed to load existing analysis', error);
     }
   };
 
-  async #toggleCollapse(container) {
-    const contentEl = container.querySelector('[data-sitescore-content]');
-    const collapseButton = container.querySelector('[data-sitescore-action="toggle-collapse"]');
-    if (!contentEl || !collapseButton) {
-      return;
-    }
-
-    const isCollapsed = container.getAttribute('data-collapsed') === 'true';
-    const newDisplay = isCollapsed ? 'block' : 'none';
-
-    contentEl.style.setProperty('display', newDisplay, 'important');
-    container.setAttribute('data-collapsed', isCollapsed ? 'false' : 'true');
-
-    if (isCollapsed) {
-      this.#showResultsIfAvailable(container);
-    }
-
-    collapseButton.title = isCollapsed ? 'Collapse' : 'Expand';
-
+  async #saveCollapseState(collapsed) {
     try {
       const url = TYPO3?.settings?.ajaxUrls?.sitescore_toggle;
       if (!url) {
         console.error('Sitescore: AJAX route "sitescore_toggle" not available');
         return;
       }
-      await new AjaxRequest(url).post({collapsed: !isCollapsed});
+      await new AjaxRequest(url).post({collapsed});
     } catch (error) {
       console.error('Sitescore: Failed to save collapse state', error);
     }
@@ -168,6 +157,11 @@ export default class SitescoreBackend {
 
   #renderSuggestions(container, suggestions) {
     const listEl = container.querySelector('[data-sitescore-suggestions-list]');
+    const toggleButton = container.querySelector('[data-sitescore-toggle-suggestions]');
+    const countEl = toggleButton?.querySelector('[data-toggle-count]');
+    const suggestionsContainer = container.querySelector('[data-sitescore-suggestions]');
+    const labelNone = suggestionsContainer?.dataset.labelNone || 'No suggestions available.';
+
     if (!listEl) {
       return;
     }
@@ -175,9 +169,12 @@ export default class SitescoreBackend {
     listEl.innerHTML = '';
 
     if (!suggestions || suggestions.length === 0) {
-      listEl.innerHTML = '<p class="text-muted">No suggestions available.</p>';
+      listEl.innerHTML = `<p class="text-muted">${labelNone}</p>`;
+      countEl && (countEl.textContent = ' (0)');
       return;
     }
+
+    countEl && (countEl.textContent = ` (${suggestions.length})`);
 
     const ul = document.createElement('ul');
     ul.className = 'list-group';
@@ -222,23 +219,36 @@ export default class SitescoreBackend {
     return icon;
   };
 
-  #toggleSuggestions(container) {
-    const listEl = container.querySelector('[data-sitescore-suggestions-list]');
+  #updateSuggestionsButton(container, isShowing) {
     const toggleButton = container.querySelector('[data-sitescore-toggle-suggestions]');
     const toggleText = toggleButton?.querySelector('[data-toggle-text]');
+    const suggestionsContainer = container.querySelector('[data-sitescore-suggestions]');
 
-    if (!listEl) {
+    if (!toggleButton || !suggestionsContainer) {
       return;
     }
 
-    const isHidden = listEl.style.display === 'none';
-    listEl.style.display = isHidden ? 'block' : 'none';
-    toggleText && (toggleText.textContent = isHidden ? 'Hide details' : 'Show details');
+    const labelShow = suggestionsContainer.dataset.labelShow || 'Show details';
+    const labelHide = suggestionsContainer.dataset.labelHide || 'Hide details';
+
+    toggleText && (toggleText.textContent = isShowing ? labelHide : labelShow);
   };
 
   /*
    * Helper methods
    */
+
+  #enableCollapseToggle(container) {
+    const toggleButton = container.querySelector('[data-sitescore-action="toggle-collapse"]');
+    const toggleIcon = container.querySelector('[data-sitescore-toggle-icon]');
+
+    if (toggleButton) {
+      toggleButton.style.pointerEvents = 'auto';
+    }
+    if (toggleIcon) {
+      toggleIcon.style.display = 'inline';
+    }
+  };
 
   #getLanguageFromUrl() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -254,6 +264,7 @@ export default class SitescoreBackend {
   #handleAnalysisSuccess(container, data, loadingEl, resultsEl) {
     this.#renderScores(container, data.scores);
     this.#renderSuggestions(container, data.suggestions);
+    this.#enableCollapseToggle(container);
     loadingEl.style.display = 'none';
     resultsEl.style.display = 'block';
   };
