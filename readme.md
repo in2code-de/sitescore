@@ -1,5 +1,18 @@
 # Sitescore - AI-powered SEO/GEO and Content Quality Dashboard for TYPO3
 
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Screenshots](#screenshots)
+- [Google Gemini API](#google-gemini-api)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [In the Page Module](#in-the-page-module)
+  - [CLI Commands](#cli-commands)
+- [Custom LLM Integration](#custom-llm-integration-like-chatgpt-claude-copilot-mistral-etc)
+- [Changelog](#changelog)
+- [Contribution with DDEV](#contribution-with-ddev)
+
 ## Introduction
 
 Sitescore provides an at-a-glance SEO/GEO and content quality dashboard directly in the TYPO3 page module. 
