@@ -1,6 +1,6 @@
 {
 	"name": "in2code/sitescore",
-	"description": "Sitescore provides an at-a-glance SEO and content quality dashboard directly in the TYPO3 page module",
+	"description": "AI-driven content quality dashboard providing SEO, GEO and accessibility scores directly in the TYPO3 page module",
 	"keywords": [
 		"typo3",
 		"seo",
