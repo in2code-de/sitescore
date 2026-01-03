@@ -250,7 +250,11 @@ This repository provides a [DDEV](https://ddev.readthedocs.io)-backed developmen
 If DDEV is installed, simply run the following commands to quickly set up a local environment:
 
 ```
+# Start DDEV
 ddev start
+
+# Import a dummy Database and use a default configuration
+ddev initialize
 ```
 
 **URLs:**
