@@ -1,9 +1,9 @@
 <?php
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'Sitescore',
+    'title' => 'Sitescore - AI generated SEO/GEO/Accessibility suggestions',
     'description' => 'AI-driven content quality dashboard providing SEO, GEO and accessibility scores directly in the TYPO3 page module',
     'category' => 'plugin',
-    'version' => '1.0.1',
+    'version' => '2.0.0',
     'author' => 'Alex Kellner',
     'author_email' => 'alexander.kellner@in2code.de',
     'author_company' => 'in2code.de',

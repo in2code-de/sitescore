@@ -42,7 +42,7 @@ Each analysis includes actionable suggestions to improve your content quality an
 ## Google Gemini API
 
 - To use the extension, you need a **Google Gemini API** key. You can register for one at https://aistudio.google.com/app/api-keys.
-- Alternatively, you can implement your own LLM provider (see [Custom LLM Integration](#custom-llm-integration) below).
+- Alternatively, you can implement your own LLM provider (see [Custom LLM Integration](#custom-llm-integration-like-chatgpt-claude-copilot-mistral-etc) below).
 
 ## Installation
 
@@ -239,10 +239,11 @@ Your custom LLM provider will now be used for all content analysis instead of Go
 
 ## Changelog
 
-| Version | Date       | State | Description                                                              |
-|---------|------------|-------|--------------------------------------------------------------------------|
-| 1.0.1   | 2025-01-01 | Task  | Small documentation update                                               |
-| 1.0.0   | 2025-12-30 | Task  | Initial release with Google Gemini integration and 5 analysis categories |
+| Version | Date       | State   | Description                                                                                                                 |
+|---------|------------|---------|-----------------------------------------------------------------------------------------------------------------------------|
+| 2.0.0   | 2025-01-06 | Feature | Add dashboard widgets of sitescore, prevent counting of tags with LLM (wrong results), support non-translated page analyzes |
+| 1.0.1   | 2025-01-01 | Task    | Small documentation update                                                                                                  |
+| 1.0.0   | 2025-12-30 | Task    | Initial release with Google Gemini integration and 5 analysis categories                                                    |
 
 ## Contribution with DDEV
 
