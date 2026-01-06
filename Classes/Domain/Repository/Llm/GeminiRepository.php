@@ -49,7 +49,14 @@ class GeminiRepository extends AbstractRepository implements RepositoryInterface
                 'temperature' => 0.1,
                 'topK' => 1,
                 'topP' => 1,
-                'maxOutputTokens' => 2048,
+                'maxOutputTokens' => 4096,
+            ],
+            'systemInstruction' => [
+                'parts' => [
+                    [
+                        'text' => 'You are an expert SEO consultant and content quality analyst. Focus on qualitative assessment of web content: evaluate SEO strategy, content structure, schema.org implementation, keyword optimization quality, accessibility best practices, and performance opportunities. Do NOT count HTML elements - technical checks are handled separately. Provide actionable, high-value insights about content quality and optimization.',
+                    ],
+                ],
             ],
         ];
 

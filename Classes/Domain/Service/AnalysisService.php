@@ -9,6 +9,7 @@ use In2code\Sitescore\Domain\Repository\Llm\RepositoryInterface;
 use In2code\Sitescore\Exception\CouldNotBuildAbsoluteUrlException;
 use In2code\Sitescore\Exception\CurlException;
 use In2code\Sitescore\Exception\UnexpectedValueException;
+use In2code\Sitescore\Utility\HtmlAnalyzer;
 use In2code\Sitescore\Utility\UrlUtility;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Database\Connection;
@@ -35,10 +36,18 @@ final class AnalysisService
         $html = $this->fetchPageHtml($pageId, $languageId, $request);
         $pageTitle = $this->extractPageTitle($html);
         $keyword = $this->getKeywordForPage($pageId, $languageId);
+
+        // Technical pre-checks (100% reliable)
+        $technicalSuggestions = HtmlAnalyzer::analyzeTechnical($html);
+
+        // LLM analysis (qualitative assessment)
         $analysis = $this->llmRepository->analyzePageContent($html, $pageTitle, $keyword);
 
         $scores = $analysis['scores'] ?? [];
-        $suggestions = $analysis['suggestions'] ?? [];
+        $llmSuggestions = $analysis['suggestions'] ?? [];
+
+        // Combine technical checks (first) + LLM suggestions
+        $suggestions = array_merge($technicalSuggestions, $llmSuggestions);
 
         $this->analysisRepository->save($pageId, $scores, $suggestions, $languageId);
 
