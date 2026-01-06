@@ -7,6 +7,7 @@ namespace In2code\Sitescore\Controller;
 use In2code\Sitescore\Domain\Service\AnalysisService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\JsonResponse;
 
 /**
@@ -17,13 +18,17 @@ class AnalysisController extends AbstractController
 {
     public function __construct(
         readonly private AnalysisService $analysisService,
-    ) {}
+        ConnectionPool $connectionPool,
+    ) {
+        parent::__construct($connectionPool);
+    }
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
         $this->setPageIdentifier($request);
         try {
-            $result = $this->analysisService->analyzePage($this->pageIdentifier, $this->getLanguageId($request), $request);
+            $languageId = $this->getAvailableLanguageId($this->pageIdentifier, $this->getLanguageId($request));
+            $result = $this->analysisService->analyzePage($this->pageIdentifier, $languageId, $request);
             return new JsonResponse([
                 'success' => true,
                 'scores' => $result['scores'],

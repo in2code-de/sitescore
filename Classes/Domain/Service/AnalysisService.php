@@ -37,16 +37,10 @@ final class AnalysisService
         $pageTitle = $this->extractPageTitle($html);
         $keyword = $this->getKeywordForPage($pageId, $languageId);
 
-        // Technical pre-checks (100% reliable)
         $technicalSuggestions = HtmlAnalyzer::analyzeTechnical($html);
-
-        // LLM analysis (qualitative assessment)
         $analysis = $this->llmRepository->analyzePageContent($html, $pageTitle, $keyword);
-
         $scores = $analysis['scores'] ?? [];
         $llmSuggestions = $analysis['suggestions'] ?? [];
-
-        // Combine technical checks (first) + LLM suggestions
         $suggestions = array_merge($technicalSuggestions, $llmSuggestions);
 
         $this->analysisRepository->save($pageId, $scores, $suggestions, $languageId);
@@ -59,7 +53,7 @@ final class AnalysisService
         ];
     }
 
-    private function fetchPageHtml(int $pageId, int $languageId, ?ServerRequestInterface $request): string
+    protected function fetchPageHtml(int $pageId, int $languageId, ?ServerRequestInterface $request): string
     {
         $url = $this->getPageUrl($pageId, $languageId, $request);
         $response = $this->requestFactory->request($url);
@@ -69,7 +63,7 @@ final class AnalysisService
         return $response->getBody()->getContents();
     }
 
-    private function extractPageTitle(string $html): string
+    protected function extractPageTitle(string $html): string
     {
         if (preg_match('/<title[^>]*>(.*?)<\/title>/is', $html, $matches)) {
             return html_entity_decode(strip_tags($matches[1]), ENT_QUOTES | ENT_HTML5, 'UTF-8');
@@ -77,7 +71,7 @@ final class AnalysisService
         return 'Unknown';
     }
 
-    private function getKeywordForPage(int $pageId, int $languageId): string
+    protected function getKeywordForPage(int $pageId, int $languageId): string
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $query = $queryBuilder
@@ -99,7 +93,7 @@ final class AnalysisService
         return trim((string)($result['tx_sitescore_keyword'] ?? ''));
     }
 
-    private function getPageUrl(int $pageId, int $languageId, ?ServerRequestInterface $request): string
+    protected function getPageUrl(int $pageId, int $languageId, ?ServerRequestInterface $request): string
     {
         $site = $this->siteFinder->getSiteByPageId($pageId);
         $language = $site->getLanguageById($languageId);
