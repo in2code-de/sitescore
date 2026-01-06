@@ -39,6 +39,10 @@ Each analysis includes actionable suggestions to improve your content quality an
 
 *Analysis results with suggestions (dark mode)*
 
+![Sitescore TYPO3 Dashboard](Documentation/Images/screenshot-dashboard.png)
+
+*Add sitescore wizards to your dashboard*
+
 ## Google Gemini API
 
 - To use the extension, you need a **Google Gemini API** key. You can register for one at https://aistudio.google.com/app/api-keys.
