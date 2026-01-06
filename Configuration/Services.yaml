@@ -31,3 +31,102 @@ services:
     factory:
       - '@In2code\Sitescore\Domain\Repository\Llm\LlmRepositoryFactory'
       - 'create'
+
+  # Dashboard Data Providers - One per category
+  dashboard.provider.sitescore.geo:
+    class: 'In2code\Sitescore\Widgets\Provider\ScoreDistributionDataProvider'
+    arguments:
+      $category: 'geo'
+
+  dashboard.provider.sitescore.performance:
+    class: 'In2code\Sitescore\Widgets\Provider\ScoreDistributionDataProvider'
+    arguments:
+      $category: 'performance'
+
+  dashboard.provider.sitescore.semantics:
+    class: 'In2code\Sitescore\Widgets\Provider\ScoreDistributionDataProvider'
+    arguments:
+      $category: 'semantics'
+
+  dashboard.provider.sitescore.keywords:
+    class: 'In2code\Sitescore\Widgets\Provider\ScoreDistributionDataProvider'
+    arguments:
+      $category: 'keywords'
+
+  dashboard.provider.sitescore.accessibility:
+    class: 'In2code\Sitescore\Widgets\Provider\ScoreDistributionDataProvider'
+    arguments:
+      $category: 'accessibility'
+
+  # Dashboard Widgets - Doughnut Charts
+  # Note: Common properties (class, groupNames, description, iconIdentifier, height, width) are shared
+  # Only identifier and title differ per widget
+  dashboard.widget.sitescore.geo:
+    class: 'TYPO3\CMS\Dashboard\Widgets\DoughnutChartWidget'
+    arguments:
+      $dataProvider: '@dashboard.provider.sitescore.geo'
+    tags:
+      - name: dashboard.widget
+        identifier: 'sitescore_geo'
+        groupNames: 'sitescore'
+        title: 'LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:dashboard.widget.geo.title'
+        description: 'LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:dashboard.widget.description'
+        iconIdentifier: 'content-dashboard'
+        height: 'medium'
+        width: 'small'
+
+  dashboard.widget.sitescore.performance:
+    class: 'TYPO3\CMS\Dashboard\Widgets\DoughnutChartWidget'
+    arguments:
+      $dataProvider: '@dashboard.provider.sitescore.performance'
+    tags:
+      - name: dashboard.widget
+        identifier: 'sitescore_performance'
+        groupNames: 'sitescore'
+        title: 'LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:dashboard.widget.performance.title'
+        description: 'LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:dashboard.widget.description'
+        iconIdentifier: 'content-dashboard'
+        height: 'medium'
+        width: 'small'
+
+  dashboard.widget.sitescore.semantics:
+    class: 'TYPO3\CMS\Dashboard\Widgets\DoughnutChartWidget'
+    arguments:
+      $dataProvider: '@dashboard.provider.sitescore.semantics'
+    tags:
+      - name: dashboard.widget
+        identifier: 'sitescore_semantics'
+        groupNames: 'sitescore'
+        title: 'LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:dashboard.widget.semantics.title'
+        description: 'LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:dashboard.widget.description'
+        iconIdentifier: 'content-dashboard'
+        height: 'medium'
+        width: 'small'
+
+  dashboard.widget.sitescore.keywords:
+    class: 'TYPO3\CMS\Dashboard\Widgets\DoughnutChartWidget'
+    arguments:
+      $dataProvider: '@dashboard.provider.sitescore.keywords'
+    tags:
+      - name: dashboard.widget
+        identifier: 'sitescore_keywords'
+        groupNames: 'sitescore'
+        title: 'LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:dashboard.widget.keywords.title'
+        description: 'LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:dashboard.widget.description'
+        iconIdentifier: 'content-dashboard'
+        height: 'medium'
+        width: 'small'
+
+  dashboard.widget.sitescore.accessibility:
+    class: 'TYPO3\CMS\Dashboard\Widgets\DoughnutChartWidget'
+    arguments:
+      $dataProvider: '@dashboard.provider.sitescore.accessibility'
+    tags:
+      - name: dashboard.widget
+        identifier: 'sitescore_accessibility'
+        groupNames: 'sitescore'
+        title: 'LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:dashboard.widget.accessibility.title'
+        description: 'LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang.xlf:dashboard.widget.description'
+        iconIdentifier: 'content-dashboard'
+        height: 'medium'
+        width: 'small'

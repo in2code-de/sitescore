@@ -36,10 +36,6 @@
 				<source>Keyword Optimization</source>
 				<target state="translated">Keyword Optimierung</target>
 			</trans-unit>
-			<trans-unit id="category.marketing">
-				<source>Online Marketing</source>
-				<target state="translated">Online Marketing</target>
-			</trans-unit>
 			<trans-unit id="category.accessibility">
 				<source>Accessibility</source>
 				<target state="translated">Barrierefreiheit</target>
@@ -65,6 +61,36 @@
 			<trans-unit id="pages.tx_sitescore_keyword">
 				<source>SEO Keyword</source>
 				<target state="translated">SEO Keyword</target>
+			</trans-unit>
+
+			<trans-unit id="dashboard.group.sitescore">
+				<source>Sitescore</source>
+				<target state="translated">Sitescore</target>
+			</trans-unit>
+
+			<trans-unit id="dashboard.widget.geo.title">
+				<source>GEO &amp; SEO Distribution</source>
+				<target state="translated">GEO &amp; SEO Verteilung</target>
+			</trans-unit>
+			<trans-unit id="dashboard.widget.performance.title">
+				<source>Performance Distribution</source>
+				<target state="translated">Performance Verteilung</target>
+			</trans-unit>
+			<trans-unit id="dashboard.widget.semantics.title">
+				<source>Semantics Distribution</source>
+				<target state="translated">Semantik Verteilung</target>
+			</trans-unit>
+			<trans-unit id="dashboard.widget.keywords.title">
+				<source>Keywords Distribution</source>
+				<target state="translated">Keywords Verteilung</target>
+			</trans-unit>
+			<trans-unit id="dashboard.widget.accessibility.title">
+				<source>Accessibility Distribution</source>
+				<target state="translated">Barrierefreiheit Verteilung</target>
+			</trans-unit>
+			<trans-unit id="dashboard.widget.description">
+				<source>Score distribution across all analyzed pages</source>
+				<target state="translated">Score Verteilung über alle analysierten Seiten</target>
 			</trans-unit>
 		</body>
 	</file>

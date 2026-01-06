@@ -28,9 +28,6 @@
 			<trans-unit id="category.keywords">
 				<source>Keyword Optimization</source>
 			</trans-unit>
-			<trans-unit id="category.marketing">
-				<source>Online Marketing</source>
-			</trans-unit>
 			<trans-unit id="category.accessibility">
 				<source>Accessibility</source>
 			</trans-unit>
@@ -50,6 +47,29 @@
 
 			<trans-unit id="pages.tx_sitescore_keyword">
 				<source>SEO Keyword</source>
+			</trans-unit>
+
+			<trans-unit id="dashboard.group.sitescore">
+				<source>Sitescore</source>
+			</trans-unit>
+
+			<trans-unit id="dashboard.widget.geo.title">
+				<source>GEO &amp; SEO Distribution</source>
+			</trans-unit>
+			<trans-unit id="dashboard.widget.performance.title">
+				<source>Performance Distribution</source>
+			</trans-unit>
+			<trans-unit id="dashboard.widget.semantics.title">
+				<source>Semantics Distribution</source>
+			</trans-unit>
+			<trans-unit id="dashboard.widget.keywords.title">
+				<source>Keywords Distribution</source>
+			</trans-unit>
+			<trans-unit id="dashboard.widget.accessibility.title">
+				<source>Accessibility Distribution</source>
+			</trans-unit>
+			<trans-unit id="dashboard.widget.description">
+				<source>Score distribution across all analyzed pages</source>
 			</trans-unit>
 		</body>
 	</file>
