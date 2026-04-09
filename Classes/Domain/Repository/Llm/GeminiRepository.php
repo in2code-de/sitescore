@@ -13,13 +13,14 @@ class GeminiRepository extends AbstractRepository implements RepositoryInterface
 {
     private string $apiKey = '';
     private string $apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/';
-    private string $model = 'gemini-2.0-flash-exp:generateContent';
+    private string $model = '';
 
     public function __construct(
         protected RequestFactory $requestFactory,
     ) {
         parent::__construct($requestFactory);
         $this->apiKey = getenv('GOOGLE_API_KEY') ?: ConfigurationUtility::getConfigurationByKey('apiKey') ?: '';
+        $this->model = ConfigurationUtility::getModel();
     }
 
     public function checkApiKey(): void
