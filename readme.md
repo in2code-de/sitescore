@@ -243,12 +243,13 @@ Your custom LLM provider will now be used for all content analysis instead of Go
 
 ## Changelog
 
-| Version | Date       | State   | Description                                                                                                                 |
-|---------|------------|---------|-----------------------------------------------------------------------------------------------------------------------------|
-| 2.0.1   | 2026-02-02 | Task    | Add funding section to composer.json                                                                                        |
-| 2.0.0   | 2026-01-06 | Feature | Add dashboard widgets of sitescore, prevent counting of tags with LLM (wrong results), support non-translated page analyzes |
-| 1.0.1   | 2026-01-01 | Task    | Small documentation update                                                                                                  |
-| 1.0.0   | 2025-12-30 | Task    | Initial release with Google Gemini integration and 5 analysis categories                                                    |
+| Version | Date       | State   | Description                                                                                                                    |
+|---------|------------|---------|--------------------------------------------------------------------------------------------------------------------------------|
+| 2.1.0   | 2026-06-30 | Task    | Updated google model to 2.5 flash (because old model stopped working), fix a css implementation bug in classic mode in backend |
+| 2.0.1   | 2026-02-02 | Task    | Add funding section to composer.json                                                                                           |
+| 2.0.0   | 2026-01-06 | Feature | Add dashboard widgets of sitescore, prevent counting of tags with LLM (wrong results), support non-translated page analyzes    |
+| 1.0.1   | 2026-01-01 | Task    | Small documentation update                                                                                                     |
+| 1.0.0   | 2025-12-30 | Task    | Initial release with Google Gemini integration and 5 analysis categories                                                       |
 
 ## Contribution with DDEV
 
