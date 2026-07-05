@@ -1,2 +1,5 @@
 # cat=advanced//100; type=text; label= Gemini API key: Better use env GOOGLE_API_KEY instead
 apiKey =
+
+# cat=advanced//110; type=text; label= Gemini model: Better use env GOOGLE_GEMINI_MODEL instead
+geminiModel =
