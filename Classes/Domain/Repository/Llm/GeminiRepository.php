@@ -13,7 +13,7 @@ class GeminiRepository extends AbstractRepository implements RepositoryInterface
 {
     private string $apiKey = '';
     private string $apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/';
-    private string $model = '';
+    private string $model = 'gemini-2.5-flash:generateContent';
 
     public function __construct(
         protected RequestFactory $requestFactory,
