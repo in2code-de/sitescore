@@ -60,14 +60,16 @@ composer req in2code/sitescore
 
 After installation, configure the extension in Extension Manager or via environment variables:
 
-| Title    | Default value | Description                                                                                                                                           |
-|----------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-| apiKey   | -             | Google Gemini API key. You can leave this empty and use the `GOOGLE_API_KEY` environment variable instead (recommended for CI/CD pipelines)           |
+| Title        | Default value | Description                                                                                                                                                                                                |
+|--------------|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| apiKey       | -             | Google Gemini API key. You can leave this empty and use the `GOOGLE_API_KEY` environment variable instead (recommended for CI/CD pipelines)                                                                |
+| geminiModel  | -             | Gemini model. You can leave this empty and use a specific model like `gemini-2.5-flash-lite:generateContent`. You can also leave this empty and use the `GOOGLE_GEMINI_MODEL` environment variable instead |
 
 **Recommended:** Use environment variables instead of saving the API key in Extension Manager:
 
 ```
 GOOGLE_API_KEY=your_api_key_from_google
+GOOGLE_GEMINI_MODEL=gemini-2.5-pro:generateContent
 ```
 
 ## Usage
@@ -245,6 +247,7 @@ Your custom LLM provider will now be used for all content analysis instead of Go
 
 | Version | Date       | State   | Description                                                                                                                    |
 |---------|------------|---------|--------------------------------------------------------------------------------------------------------------------------------|
+| 3.0.0   | 2026-07-05 | Task    | Make gemini model overwriteable via ENV or extension settings                                                                  |
 | 2.1.0   | 2026-06-30 | Task    | Updated google model to 2.5 flash (because old model stopped working), fix a css implementation bug in classic mode in backend |
 | 2.0.1   | 2026-02-02 | Task    | Add funding section to composer.json                                                                                           |
 | 2.0.0   | 2026-01-06 | Feature | Add dashboard widgets of sitescore, prevent counting of tags with LLM (wrong results), support non-translated page analyzes    |
