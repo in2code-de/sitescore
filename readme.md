@@ -60,10 +60,10 @@ composer req in2code/sitescore
 
 After installation, configure the extension in Extension Manager or via environment variables:
 
-| Title        | Default value | Description                                                                                                                                                                                                |
-|--------------|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| apiKey       | -             | Google Gemini API key. You can leave this empty and use the `GOOGLE_API_KEY` environment variable instead (recommended for CI/CD pipelines)                                                                |
-| geminiModel  | -             | Gemini model. You can leave this empty and use a specific model like `gemini-2.5-flash-lite:generateContent`. You can also leave this empty and use the `GOOGLE_GEMINI_MODEL` environment variable instead |
+| Title        | Default value | Description                                                                                                                                                             |
+|--------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| apiKey       | -             | Google Gemini API key. You can leave this empty and use the `GOOGLE_API_KEY` environment variable instead (recommended for CI/CD pipelines)                             |
+| geminiModel  | -             | Gemini model. If empty the default model `gemini-2.5-flash:generateContent` is used. Add a specific model or use the `GOOGLE_GEMINI_MODEL` environment variable instead |
 
 **Recommended:** Use environment variables instead of saving the API key in Extension Manager:
 
