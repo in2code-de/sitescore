@@ -9,7 +9,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ConfigurationUtility
 {
-    private const DEFAULT_GEMINI_MODEL = 'gemini-2.5-flash-lite:generateContent';
+    private const DEFAULT_GEMINI_MODEL = 'gemini-3.5-flash-lite:generateContent';
 
     public static function getConfigurationByKey(string $key): string
     {
