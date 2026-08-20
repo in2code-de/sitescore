@@ -247,6 +247,7 @@ Your custom LLM provider will now be used for all content analysis instead of Go
 
 | Version | Date       | State   | Description                                                                                                                    |
 |---------|------------|---------|--------------------------------------------------------------------------------------------------------------------------------|
+| 3.1.0   | 2026-08-20 | Task    | Update default gemini model, set thinkingLevel for Gemini 3.x page analysis requests                                           |
 | 3.0.0   | 2026-07-05 | Task    | Make gemini model overwriteable via ENV or extension settings                                                                  |
 | 2.1.0   | 2026-06-30 | Task    | Updated google model to 2.5 flash (because old model stopped working), fix a css implementation bug in classic mode in backend |
 | 2.0.1   | 2026-02-02 | Task    | Add funding section to composer.json                                                                                           |
