@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2026-09-23T12:00:00Z" product-name="sitescore">
+		<header/>
+		<body>
+			<trans-unit id="mainmodule.title">
+				<source>AI</source>
+				<target state="translated">KI</target>
+			</trans-unit>
+			<trans-unit id="module.title">
+				<source>Sitescore</source>
+				<target state="translated">Sitescore</target>
+			</trans-unit>
+			<trans-unit id="module.description">
+				<source>Settings for the AI driven content quality analysis</source>
+				<target state="translated">Einstellungen für die KI-gestützte Analyse der Inhaltsqualität</target>
+			</trans-unit>
+			<trans-unit id="module.shortDescription">
+				<source>AI page analysis settings</source>
+				<target state="translated">Einstellungen KI-Seitenanalyse</target>
+			</trans-unit>
+			<trans-unit id="module.intro">
+				<source>Values stored here overrule the extension configuration. Empty fields use the value shown as placeholder.</source>
+				<target state="translated">Hier gespeicherte Werte überschreiben die Extension-Konfiguration. Leere Felder verwenden den als Platzhalter angezeigten Wert.</target>
+			</trans-unit>
+			<trans-unit id="button.save">
+				<source>Save settings</source>
+				<target state="translated">Einstellungen speichern</target>
+			</trans-unit>
+			<trans-unit id="setting.apiKey">
+				<source>Gemini API key</source>
+				<target state="translated">Gemini API-Key</target>
+			</trans-unit>
+			<trans-unit id="setting.apiKey.description">
+				<source>Only visible for administrators. Recommended: set the environment variable GOOGLE_API_KEY instead. Leave empty to keep the stored key.</source>
+				<target state="translated">Nur für Administratoren sichtbar. Empfohlen: stattdessen die Umgebungsvariable GOOGLE_API_KEY setzen. Leer lassen, um den gespeicherten Key zu behalten.</target>
+			</trans-unit>
+			<trans-unit id="setting.geminiModel">
+				<source>Gemini model</source>
+				<target state="translated">Gemini-Modell</target>
+			</trans-unit>
+			<trans-unit id="setting.geminiModel.description">
+				<source>Model identifier including method, e.g. gemini-3.5-flash-lite:generateContent</source>
+				<target state="translated">Modellbezeichnung inklusive Methode, z. B. gemini-3.5-flash-lite:generateContent</target>
+			</trans-unit>
+			<trans-unit id="setting.thinkingLevel">
+				<source>Thinking level</source>
+				<target state="translated">Thinking-Level</target>
+			</trans-unit>
+			<trans-unit id="setting.thinkingLevel.description">
+				<source>How much the model reasons before answering. Higher levels can improve quality but are slower and more expensive. Only supported by Gemini 3.x models.</source>
+				<target state="translated">Wie viel das Modell vor der Antwort „nachdenkt“. Höhere Stufen können die Qualität verbessern, sind aber langsamer und teurer. Nur von Gemini-3.x-Modellen unterstützt.</target>
+			</trans-unit>
+			<trans-unit id="secret.remove">
+				<source>Remove stored key</source>
+				<target state="translated">Gespeicherten Key entfernen</target>
+			</trans-unit>
+			<trans-unit id="source.environment">
+				<source>Set via environment variable %s, cannot be changed here.</source>
+				<target state="translated">Über die Umgebungsvariable %s gesetzt, hier nicht änderbar.</target>
+			</trans-unit>
+			<trans-unit id="source.module">
+				<source>Stored in this module.</source>
+				<target state="translated">In diesem Modul hinterlegt.</target>
+			</trans-unit>
+			<trans-unit id="source.extensionConfiguration">
+				<source>Taken from the extension configuration.</source>
+				<target state="translated">Aus der Extension-Konfiguration übernommen.</target>
+			</trans-unit>
+			<trans-unit id="source.none">
+				<source>Not configured yet.</source>
+				<target state="translated">Noch nicht konfiguriert.</target>
+			</trans-unit>
+			<trans-unit id="option.default">
+				<source>Default (%s)</source>
+				<target state="translated">Standard (%s)</target>
+			</trans-unit>
+			<trans-unit id="option.boolean.1">
+				<source>Yes</source>
+				<target state="translated">Ja</target>
+			</trans-unit>
+			<trans-unit id="option.boolean.0">
+				<source>No</source>
+				<target state="translated">Nein</target>
+			</trans-unit>
+			<trans-unit id="message.saved">
+				<source>Settings saved.</source>
+				<target state="translated">Einstellungen gespeichert.</target>
+			</trans-unit>
+			<trans-unit id="message.invalid">
+				<source>Settings saved, but these values were invalid and have been ignored:</source>
+				<target state="translated">Einstellungen gespeichert, aber diese Werte waren ungültig und wurden ignoriert:</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

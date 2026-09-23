@@ -82,6 +82,23 @@ The model must be available for your API key and support `thinkingLevel` (Gemini
 analysis request. Older models like `gemini-2.5-pro` are no longer available to new API keys and lead to an error
 message in the backend.
 
+### Backend module "AI > Sitescore"
+
+Settings can also be managed in the backend module **AI > Sitescore**, without access to the Extension Manager. The
+module **AI** is shared by all in2code AI extensions (alternative, imager, sitescore, texter): each extension adds
+its own submodule, so installing one or more of them results in one common "AI" module in the backend.
+
+- TYPO3 13: main module **AI** in the module menu with one entry per installed extension
+- TYPO3 14: module **Administration > AI** with a card based overview of all installed extensions
+
+- Editable settings: `apiKey`, `geminiModel` and `thinkingLevel`
+- Values are stored in `sys_registry` (namespace `tx_sitescore`) and overrule the Extension Manager configuration. Empty
+  fields fall back to the Extension Manager configuration or the default value.
+- Environment variables (`GOOGLE_API_KEY`, `GOOGLE_GEMINI_MODEL`) always win - the related fields are shown as locked
+  then.
+- Access is granted per backend user group: allow the module "AI" and the submodule of this extension. The API key can only be seen
+  and changed by administrators, the stored API key is never sent back to the browser.
+
 ## Usage
 
 ### In the Page Module
