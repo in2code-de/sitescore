@@ -1,0 +1,73 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+<f:layout name="Module" />
+
+<f:section name="Content">
+    <f:variable name="ll" value="LLL:EXT:sitescore/Resources/Private/Language/Backend/locallang_module.xlf:" />
+
+    <h1><f:translate key="{ll}module.title" /></h1>
+    <p class="text-body-secondary"><f:translate key="{ll}module.intro" /></p>
+
+    <form action="{saveUri}" method="post">
+        <f:for each="{settings}" as="setting">
+            <f:render section="Setting" arguments="{setting: setting, ll: ll}" />
+        </f:for>
+        <button type="submit" class="btn btn-primary">
+            <f:translate key="{ll}button.save" />
+        </button>
+    </form>
+</f:section>
+
+<f:section name="Setting">
+    <div class="form-group mb-4">
+        <label class="form-label" for="setting-{setting.key}">
+            <f:translate key="{ll}setting.{setting.key}" />
+        </label>
+        <f:switch expression="{setting.type}">
+            <f:case value="textarea">
+                <textarea class="form-control" id="setting-{setting.key}" name="settings[{setting.key}]" rows="6" placeholder="{setting.fallback}" {f:if(condition: setting.lockedByEnvironment, then: 'disabled')}>{setting.value}</textarea>
+            </f:case>
+            <f:case value="password">
+                <input type="password" class="form-control" id="setting-{setting.key}" name="settings[{setting.key}]" value="" autocomplete="new-password" placeholder="{setting.maskedValue}" {f:if(condition: setting.lockedByEnvironment, then: 'disabled')} />
+                <f:if condition="{setting.source} == 'module'">
+                    <div class="form-check mt-2">
+                        <input type="checkbox" class="form-check-input" id="remove-{setting.key}" name="removeSecrets[{setting.key}]" value="1" />
+                        <label class="form-check-label" for="remove-{setting.key}"><f:translate key="{ll}secret.remove" /></label>
+                    </div>
+                </f:if>
+                <div class="form-text">
+                    <f:translate key="{ll}source.{setting.source}" arguments="{0: setting.environmentVariable}" />
+                </div>
+            </f:case>
+            <f:case value="select">
+                <select class="form-select" id="setting-{setting.key}" name="settings[{setting.key}]" {f:if(condition: setting.lockedByEnvironment, then: 'disabled')}>
+                    <option value=""><f:translate key="{ll}option.default" arguments="{0: setting.fallback}" /></option>
+                    <f:for each="{setting.options}" as="option">
+                        <option value="{option}" {f:if(condition: '{option} == {setting.value}', then: 'selected')}>{option}</option>
+                    </f:for>
+                </select>
+            </f:case>
+            <f:case value="boolean">
+                <select class="form-select" id="setting-{setting.key}" name="settings[{setting.key}]" {f:if(condition: setting.lockedByEnvironment, then: 'disabled')}>
+                    <option value=""><f:translate key="{ll}option.default" arguments="{0: '{f:translate(key: \'{ll}option.boolean.{setting.fallback}\')}'}" /></option>
+                    <option value="1" {f:if(condition: '{setting.value} == 1', then: 'selected')}><f:translate key="{ll}option.boolean.1" /></option>
+                    <option value="0" {f:if(condition: '{setting.value} == \'0\'', then: 'selected')}><f:translate key="{ll}option.boolean.0" /></option>
+                </select>
+            </f:case>
+            <f:defaultCase>
+                <input type="{f:if(condition: '{setting.type} == \'integer\'', then: 'number', else: 'text')}" class="form-control" id="setting-{setting.key}" name="settings[{setting.key}]" value="{setting.value}" placeholder="{setting.fallback}" {f:if(condition: setting.lockedByEnvironment, then: 'disabled')} />
+            </f:defaultCase>
+        </f:switch>
+        <f:if condition="{setting.lockedByEnvironment} && {setting.type} != 'password'">
+            <div class="form-text text-warning">
+                <f:translate key="{ll}source.environment" arguments="{0: setting.environmentVariable}" />
+            </div>
+        </f:if>
+        <div class="form-text">
+            <f:translate key="{ll}setting.{setting.key}.description" />
+        </div>
+    </div>
+</f:section>
+</html>

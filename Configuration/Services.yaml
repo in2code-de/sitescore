@@ -33,3 +33,7 @@ services:
     factory:
       - '@In2code\Sitescore\Domain\Repository\Llm\LlmRepositoryFactory'
       - 'create'
+
+  # Public, because ConfigurationUtility reads the module settings via GeneralUtility::makeInstance()
+  In2code\Sitescore\Domain\Repository\SettingsRepository:
+    public: true
