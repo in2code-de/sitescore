@@ -75,7 +75,9 @@ export default class SitescoreBackend {
         ? this.#handleAnalysisSuccess(container, data, loadingEl, resultsEl)
         : this.#handleAnalysisError(errorEl, loadingEl, data?.error);
     } catch (error) {
-      this.#handleAnalysisError(errorEl, loadingEl, error.message);
+      // AjaxRequest rejects with an AjaxResponse on HTTP errors, so read the error message from the JSON body
+      const data = await error?.resolve?.().catch(() => null);
+      this.#handleAnalysisError(errorEl, loadingEl, data?.error || error?.message);
     }
   };
 

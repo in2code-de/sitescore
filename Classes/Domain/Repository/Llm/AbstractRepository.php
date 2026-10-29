@@ -23,19 +23,27 @@ abstract class AbstractRepository
 
     protected function generateAnalysis(string $html, string $pageTitle, string $keyword): array
     {
-        $response = $this->requestFactory->request(
-            $this->getApiUrl(),
-            $this->requestMethod,
-            $this->getOptions($html, $pageTitle, $keyword)
-        );
+        // Disable Guzzle exceptions on 4xx/5xx, as they truncate the response body that contains the actual API error
+        $options = ['http_errors' => false] + $this->getOptions($html, $pageTitle, $keyword);
+        $response = $this->requestFactory->request($this->getApiUrl(), $this->requestMethod, $options);
         if ($response->getStatusCode() !== 200) {
             throw new ApiException(
-                'Failed to analyze page: ' . $response->getBody()->getContents(),
+                'Failed to analyze page (HTTP ' . $response->getStatusCode() . '): '
+                . $this->getErrorMessage($response->getBody()->getContents()),
                 1735042801
             );
         }
         $responseData = json_decode($response->getBody()->getContents(), true);
         return $this->parseResponse($responseData);
+    }
+
+    /**
+     * Get the error message from an API error response like {"error": {"message": "..."}} or the raw body as fallback
+     */
+    protected function getErrorMessage(string $responseBody): string
+    {
+        $responseData = json_decode($responseBody, true);
+        return $responseData['error']['message'] ?? $responseBody;
     }
 
     protected function parseResponse(array $responseData): array
