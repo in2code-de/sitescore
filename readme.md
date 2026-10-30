@@ -63,14 +63,24 @@ After installation, configure the extension in Extension Manager or via environm
 | Title       | Default value | Description                                                                                                                                                                  |
 |-------------|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | apiKey      | -             | Google Gemini API key. You can leave this empty and use the `GOOGLE_API_KEY` environment variable instead (recommended for CI/CD pipelines)                                  |
-| geminiModel | -             | Gemini model. If empty the default model `gemini-3.5-flash-lite:generateContent` is used. Add a specific model or use the `GOOGLE_GEMINI_MODEL` environment variable instead |
+| geminiModel | -             | Gemini model. Leave empty to use the default model `gemini-3.5-flash-lite:generateContent`. Only set it (or the `GOOGLE_GEMINI_MODEL` environment variable) to use your own model |
 
 **Recommended:** Use environment variables instead of saving the API key in Extension Manager:
 
 ```
 GOOGLE_API_KEY=your_api_key_from_google
-GOOGLE_GEMINI_MODEL=gemini-2.5-pro:generateContent
 ```
+
+**Optional:** Only configure a model if you want to use your own model instead of the default one. Otherwise leave
+it empty, so the extension keeps using its current default model after updates:
+
+```
+GOOGLE_GEMINI_MODEL=your_gemini_model:generateContent
+```
+
+The model must be available for your API key and support `thinkingLevel` (Gemini 3.x), as this is sent with every
+analysis request. Older models like `gemini-2.5-pro` are no longer available to new API keys and lead to an error
+message in the backend.
 
 ## Usage
 
