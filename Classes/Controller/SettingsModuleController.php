@@ -45,12 +45,7 @@ class SettingsModuleController
 
     public function saveAction(ServerRequestInterface $request): ResponseInterface
     {
-        $body = (array)$request->getParsedBody();
-        $invalidKeys = $this->settingsService->save(
-            (array)($body['settings'] ?? []),
-            (array)($body['removeSecrets'] ?? []),
-            $this->getAccess()
-        );
+        $invalidKeys = $this->settingsService->save((array)$request->getParsedBody(), $this->getAccess());
         $this->addSaveMessage($invalidKeys);
         return new RedirectResponse($this->uriBuilder->buildUriFromRoute(self::MODULE_IDENTIFIER));
     }

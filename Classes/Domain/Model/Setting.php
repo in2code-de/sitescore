@@ -41,6 +41,12 @@ final class Setting
         return $access->value >= $this->access->value;
     }
 
+    public function allowsEmptyValue(): bool
+    {
+        return $this->default === ''
+            && in_array($this->type, [self::TYPE_TEXT, self::TYPE_TEXTAREA, self::TYPE_INTEGER_LIST], true);
+    }
+
     public function isLockedByEnvironment(): bool
     {
         return $this->environmentVariable !== '' && (string)getenv($this->environmentVariable) !== '';

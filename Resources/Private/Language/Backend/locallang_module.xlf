@@ -42,6 +42,9 @@
 			<trans-unit id="secret.remove">
 				<source>Remove stored key</source>
 			</trans-unit>
+			<trans-unit id="value.emptyOverride">
+				<source>Keep empty instead of using the value from the extension configuration</source>
+			</trans-unit>
 			<trans-unit id="source.environment">
 				<source>Set via environment variable %s, cannot be changed here.</source>
 			</trans-unit>

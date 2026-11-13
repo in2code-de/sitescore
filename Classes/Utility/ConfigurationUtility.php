@@ -18,11 +18,7 @@ class ConfigurationUtility
 
     public static function getConfigurationByKey(string $key): string
     {
-        $value = self::getModuleSettingByKey($key);
-        if ($value === '') {
-            $value = self::getExtensionConfigurationByKey($key);
-        }
-        return $value;
+        return self::getModuleSettingByKey($key) ?? self::getExtensionConfigurationByKey($key);
     }
 
     public static function getExtensionConfigurationByKey(string $key): string
@@ -49,12 +45,12 @@ class ConfigurationUtility
     /**
      * Database may not be available (e.g. install tool), fall back to the extension configuration then
      */
-    protected static function getModuleSettingByKey(string $key): string
+    protected static function getModuleSettingByKey(string $key): ?string
     {
         try {
             $value = GeneralUtility::makeInstance(SettingsRepository::class)->findByKey($key);
         } catch (\Throwable) {
-            $value = '';
+            $value = null;
         }
         return $value;
     }

@@ -60,6 +60,12 @@
                 <input type="{f:if(condition: '{setting.type} == \'integer\'', then: 'number', else: 'text')}" min="{f:if(condition: '{setting.type} == \'integer\'', then: '1')}" class="form-control" id="setting-{setting.key}" name="settings[{setting.key}]" value="{setting.value}" placeholder="{setting.fallback}" {f:if(condition: setting.lockedByEnvironment, then: 'disabled')} />
             </f:defaultCase>
         </f:switch>
+        <f:if condition="{setting.emptyOverridable}">
+            <div class="form-check mt-2">
+                <input type="checkbox" class="form-check-input" id="empty-{setting.key}" name="emptyOverrides[{setting.key}]" value="1" {f:if(condition: setting.emptyOverride, then: 'checked')} {f:if(condition: setting.lockedByEnvironment, then: 'disabled')} />
+                <label class="form-check-label" for="empty-{setting.key}"><f:translate key="{ll}value.emptyOverride" /></label>
+            </div>
+        </f:if>
         <f:if condition="{setting.lockedByEnvironment} && {setting.type} != 'password'">
             <div class="form-text text-warning">
                 <f:translate key="{ll}source.environment" arguments="{0: setting.environmentVariable}" />

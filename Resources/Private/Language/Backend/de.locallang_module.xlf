@@ -55,6 +55,10 @@
 				<source>Remove stored key</source>
 				<target state="translated">Gespeicherten Key entfernen</target>
 			</trans-unit>
+			<trans-unit id="value.emptyOverride">
+				<source>Keep empty instead of using the value from the extension configuration</source>
+				<target state="translated">Leer lassen, statt den Wert aus der Extension-Konfiguration zu verwenden</target>
+			</trans-unit>
 			<trans-unit id="source.environment">
 				<source>Set via environment variable %s, cannot be changed here.</source>
 				<target state="translated">Über die Umgebungsvariable %s gesetzt, hier nicht änderbar.</target>

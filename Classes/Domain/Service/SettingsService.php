@@ -17,6 +17,9 @@ class SettingsService
     public const SOURCE_EXTENSION_CONFIGURATION = 'extensionConfiguration';
     public const SOURCE_NONE = 'none';
 
+    private const FORM_SETTINGS = 'settings';
+    private const FORM_REMOVE_SECRETS = 'removeSecrets';
+    private const FORM_EMPTY_OVERRIDES = 'emptyOverrides';
     private const MASK = '••••••••';
     private const VISIBLE_SECRET_CHARACTERS = 4;
     private const MINIMUM_SECRET_LENGTH_FOR_HINT = 12;
@@ -35,20 +38,25 @@ class SettingsService
         $moduleSettings = $this->settingsRepository->findAll();
         $rows = [];
         foreach ($this->getAccessibleSettings($access) as $setting) {
-            $moduleValue = $moduleSettings[$setting->key] ?? '';
+            $moduleValue = $moduleSettings[$setting->key] ?? null;
             $extensionConfigurationValue = ConfigurationUtility::getExtensionConfigurationByKey($setting->key);
             $isPassword = $setting->isPassword();
+            $isEmptyOverride = $moduleValue === '';
             $rows[] = [
                 'key' => $setting->key,
                 'type' => $setting->type,
                 'options' => $setting->options,
                 'environmentVariable' => $setting->environmentVariable,
                 'lockedByEnvironment' => $setting->isLockedByEnvironment(),
-                'value' => $isPassword ? '' : $moduleValue,
-                'fallback' => $isPassword ? '' : $this->getFallbackValue($setting, $extensionConfigurationValue),
+                'value' => $isPassword ? '' : (string)$moduleValue,
+                'fallback' => $isPassword || $isEmptyOverride
+                    ? ''
+                    : $this->getFallbackValue($setting, $extensionConfigurationValue),
+                'emptyOverridable' => $this->isEmptyOverridable($setting, $extensionConfigurationValue),
+                'emptyOverride' => $isEmptyOverride,
                 'source' => $this->getSource($setting, $moduleValue, $extensionConfigurationValue),
                 'maskedValue' => $isPassword
-                    ? $this->getMaskedEffectiveValue($setting, $moduleValue ?: $extensionConfigurationValue)
+                    ? $this->getMaskedEffectiveValue($setting, (string)$moduleValue ?: $extensionConfigurationValue)
                     : '',
             ];
         }
@@ -58,8 +66,11 @@ class SettingsService
     /**
      * @return string[] keys of settings with invalid values that were not saved
      */
-    public function save(array $input, array $removeSecrets, SettingAccess $access): array
+    public function save(array $formData, SettingAccess $access): array
     {
+        $input = (array)($formData[self::FORM_SETTINGS] ?? []);
+        $removeSecrets = (array)($formData[self::FORM_REMOVE_SECRETS] ?? []);
+        $emptyOverrides = (array)($formData[self::FORM_EMPTY_OVERRIDES] ?? []);
         $moduleSettings = $this->settingsRepository->findAll();
         $invalidKeys = [];
         $submittedSettings = array_filter(
@@ -73,7 +84,7 @@ class SettingsService
             } elseif ($setting->isPassword()) {
                 $moduleSettings = $this->applySecret($moduleSettings, $setting, $value, isset($removeSecrets[$setting->key]));
             } else {
-                $moduleSettings[$setting->key] = $value;
+                $moduleSettings = $this->applyValue($moduleSettings, $setting, $value, isset($emptyOverrides[$setting->key]));
             }
         }
         $this->settingsRepository->persist($moduleSettings);
@@ -116,6 +127,25 @@ class SettingsService
     }
 
     /**
+     * An explicitly stored empty value overrules a value from the extension configuration
+     */
+    protected function applyValue(array $moduleSettings, Setting $setting, string $value, bool $overrideWithEmpty): array
+    {
+        $extensionConfigurationValue = ConfigurationUtility::getExtensionConfigurationByKey($setting->key);
+        if ($value !== '' || ($overrideWithEmpty && $this->isEmptyOverridable($setting, $extensionConfigurationValue))) {
+            $moduleSettings[$setting->key] = $value;
+        } else {
+            unset($moduleSettings[$setting->key]);
+        }
+        return $moduleSettings;
+    }
+
+    protected function isEmptyOverridable(Setting $setting, string $extensionConfigurationValue): bool
+    {
+        return $setting->allowsEmptyValue() && $extensionConfigurationValue !== '';
+    }
+
+    /**
      * "0" is a valid value (e.g. for booleans), so only an empty string falls back to the default
      */
     protected function getFallbackValue(Setting $setting, string $extensionConfigurationValue): string
@@ -127,12 +157,12 @@ class SettingsService
         return $value;
     }
 
-    protected function getSource(Setting $setting, string $moduleValue, string $extensionConfigurationValue): string
+    protected function getSource(Setting $setting, ?string $moduleValue, string $extensionConfigurationValue): string
     {
         $source = self::SOURCE_NONE;
         if ($setting->isLockedByEnvironment()) {
             $source = self::SOURCE_ENVIRONMENT;
-        } elseif ($moduleValue !== '') {
+        } elseif ($moduleValue !== null) {
             $source = self::SOURCE_MODULE;
         } elseif ($extensionConfigurationValue !== '') {
             $source = self::SOURCE_EXTENSION_CONFIGURATION;

@@ -25,9 +25,10 @@ class SettingsRepository
         return is_array($settings) ? $settings : [];
     }
 
-    public function findByKey(string $key): string
+    public function findByKey(string $key): ?string
     {
-        return (string)($this->findAll()[$key] ?? '');
+        $value = $this->findAll()[$key] ?? null;
+        return $value === null ? null : (string)$value;
     }
 
     /**
@@ -35,7 +36,6 @@ class SettingsRepository
      */
     public function persist(array $settings): void
     {
-        $settings = array_filter($settings, static fn(string $value): bool => $value !== '');
         $this->registry->set(self::REGISTRY_NAMESPACE, self::REGISTRY_KEY, $settings);
     }
 }
