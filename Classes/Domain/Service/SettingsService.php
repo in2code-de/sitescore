@@ -67,8 +67,8 @@ class SettingsService
             static fn(Setting $setting): bool => array_key_exists($setting->key, $input)
         );
         foreach ($submittedSettings as $setting) {
-            $value = trim((string)$input[$setting->key]);
-            if ($setting->isValidValue($value) === false) {
+            $value = is_string($input[$setting->key]) ? trim($input[$setting->key]) : null;
+            if ($value === null || $setting->isValidValue($value) === false) {
                 $invalidKeys[] = $setting->key;
             } elseif ($setting->isPassword()) {
                 $moduleSettings = $this->applySecret($moduleSettings, $setting, $value, isset($removeSecrets[$setting->key]));
@@ -107,10 +107,10 @@ class SettingsService
      */
     protected function applySecret(array $moduleSettings, Setting $setting, string $value, bool $remove): array
     {
-        if ($remove) {
-            unset($moduleSettings[$setting->key]);
-        } elseif ($value !== '') {
+        if ($value !== '') {
             $moduleSettings[$setting->key] = $value;
+        } elseif ($remove) {
+            unset($moduleSettings[$setting->key]);
         }
         return $moduleSettings;
     }

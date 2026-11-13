@@ -57,7 +57,7 @@
                 </select>
             </f:case>
             <f:defaultCase>
-                <input type="{f:if(condition: '{setting.type} == \'integer\'', then: 'number', else: 'text')}" class="form-control" id="setting-{setting.key}" name="settings[{setting.key}]" value="{setting.value}" placeholder="{setting.fallback}" {f:if(condition: setting.lockedByEnvironment, then: 'disabled')} />
+                <input type="{f:if(condition: '{setting.type} == \'integer\'', then: 'number', else: 'text')}" min="{f:if(condition: '{setting.type} == \'integer\'', then: '1')}" class="form-control" id="setting-{setting.key}" name="settings[{setting.key}]" value="{setting.value}" placeholder="{setting.fallback}" {f:if(condition: setting.lockedByEnvironment, then: 'disabled')} />
             </f:defaultCase>
         </f:switch>
         <f:if condition="{setting.lockedByEnvironment} && {setting.type} != 'password'">
