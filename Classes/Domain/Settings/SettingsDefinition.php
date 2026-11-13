@@ -24,6 +24,7 @@ class SettingsDefinition
             ),
             new Setting(
                 key: 'geminiModel',
+                type: Setting::TYPE_MODEL,
                 default: ConfigurationUtility::DEFAULT_GEMINI_MODEL,
                 environmentVariable: ConfigurationUtility::ENVIRONMENT_GEMINI_MODEL,
             ),

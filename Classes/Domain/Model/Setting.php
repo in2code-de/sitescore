@@ -12,6 +12,9 @@ final class Setting
     public const TYPE_SELECT = 'select';
     public const TYPE_INTEGER = 'integer';
     public const TYPE_BOOLEAN = 'boolean';
+    public const TYPE_MODEL = 'model';
+
+    private const PATTERN_MODEL = '~^[A-Za-z0-9][A-Za-z0-9._:-]*$~';
 
     /**
      * @param string[] $options allowed values for TYPE_SELECT
@@ -47,6 +50,7 @@ final class Setting
             self::TYPE_SELECT => $value === '' || in_array($value, $this->options, true),
             self::TYPE_INTEGER => $value === '' || ctype_digit($value),
             self::TYPE_BOOLEAN => in_array($value, ['', '0', '1'], true),
+            self::TYPE_MODEL => $value === '' || preg_match(self::PATTERN_MODEL, $value) === 1,
             default => true,
         };
     }
