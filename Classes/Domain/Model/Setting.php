@@ -22,13 +22,18 @@ final class Setting
         public readonly string $default = '',
         public readonly array $options = [],
         public readonly string $environmentVariable = '',
-        public readonly bool $adminOnly = false,
+        public readonly SettingAccess $access = SettingAccess::User,
     ) {
     }
 
     public function isPassword(): bool
     {
         return $this->type === self::TYPE_PASSWORD;
+    }
+
+    public function isAccessibleFor(SettingAccess $access): bool
+    {
+        return $access->value >= $this->access->value;
     }
 
     public function isLockedByEnvironment(): bool

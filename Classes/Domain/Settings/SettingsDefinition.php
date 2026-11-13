@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace In2code\Sitescore\Domain\Settings;
 
 use In2code\Sitescore\Domain\Model\Setting;
+use In2code\Sitescore\Domain\Model\SettingAccess;
 use In2code\Sitescore\Utility\ConfigurationUtility;
 
 class SettingsDefinition
@@ -19,7 +20,7 @@ class SettingsDefinition
                 key: 'apiKey',
                 type: Setting::TYPE_PASSWORD,
                 environmentVariable: ConfigurationUtility::ENVIRONMENT_API_KEY,
-                adminOnly: true,
+                access: SettingAccess::Admin,
             ),
             new Setting(
                 key: 'geminiModel',

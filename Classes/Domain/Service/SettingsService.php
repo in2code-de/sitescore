@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace In2code\Sitescore\Domain\Service;
 
 use In2code\Sitescore\Domain\Model\Setting;
+use In2code\Sitescore\Domain\Model\SettingAccess;
 use In2code\Sitescore\Domain\Repository\SettingsRepository;
 use In2code\Sitescore\Domain\Settings\SettingsDefinition;
 use In2code\Sitescore\Utility\ConfigurationUtility;
@@ -29,11 +30,11 @@ class SettingsService
     /**
      * Secrets are never passed to the view, only a masked hint and where the value comes from
      */
-    public function getSettingsForView(bool $isAdmin): array
+    public function getSettingsForView(SettingAccess $access): array
     {
         $moduleSettings = $this->settingsRepository->findAll();
         $rows = [];
-        foreach ($this->getAccessibleSettings($isAdmin) as $setting) {
+        foreach ($this->getAccessibleSettings($access) as $setting) {
             $moduleValue = $moduleSettings[$setting->key] ?? '';
             $extensionConfigurationValue = ConfigurationUtility::getExtensionConfigurationByKey($setting->key);
             $isPassword = $setting->isPassword();
@@ -57,12 +58,12 @@ class SettingsService
     /**
      * @return string[] keys of settings with invalid values that were not saved
      */
-    public function save(array $input, array $removeSecrets, bool $isAdmin): array
+    public function save(array $input, array $removeSecrets, SettingAccess $access): array
     {
         $moduleSettings = $this->settingsRepository->findAll();
         $invalidKeys = [];
         $submittedSettings = array_filter(
-            $this->getEditableSettings($isAdmin),
+            $this->getEditableSettings($access),
             static fn(Setting $setting): bool => array_key_exists($setting->key, $input)
         );
         foreach ($submittedSettings as $setting) {
@@ -82,21 +83,21 @@ class SettingsService
     /**
      * @return Setting[]
      */
-    protected function getAccessibleSettings(bool $isAdmin): array
+    protected function getAccessibleSettings(SettingAccess $access): array
     {
         return array_filter(
             $this->settingsDefinition->getSettings(),
-            static fn(Setting $setting): bool => $setting->adminOnly === false || $isAdmin
+            static fn(Setting $setting): bool => $setting->isAccessibleFor($access)
         );
     }
 
     /**
      * @return Setting[]
      */
-    protected function getEditableSettings(bool $isAdmin): array
+    protected function getEditableSettings(SettingAccess $access): array
     {
         return array_filter(
-            $this->getAccessibleSettings($isAdmin),
+            $this->getAccessibleSettings($access),
             static fn(Setting $setting): bool => $setting->isLockedByEnvironment() === false
         );
     }

@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace In2code\Sitescore\Controller;
 
+use In2code\Sitescore\Domain\Model\SettingAccess;
 use In2code\Sitescore\Domain\Service\SettingsService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -28,7 +29,6 @@ class SettingsModuleController
         private readonly SettingsService $settingsService,
         private readonly UriBuilder $uriBuilder,
         private readonly FlashMessageService $flashMessageService,
-        private readonly Context $context,
     ) {
     }
 
@@ -37,7 +37,7 @@ class SettingsModuleController
         $view = $this->moduleTemplateFactory->create($request);
         $view->setTitle($this->translate('module.title'));
         $view->assignMultiple([
-            'settings' => $this->settingsService->getSettingsForView($this->isAdmin()),
+            'settings' => $this->settingsService->getSettingsForView($this->getAccess()),
             'saveUri' => (string)$this->uriBuilder->buildUriFromRoute(self::MODULE_IDENTIFIER . '.save'),
         ]);
         return $view->renderResponse('SettingsModule/Index');
@@ -49,7 +49,7 @@ class SettingsModuleController
         $invalidKeys = $this->settingsService->save(
             (array)($body['settings'] ?? []),
             (array)($body['removeSecrets'] ?? []),
-            $this->isAdmin()
+            $this->getAccess()
         );
         $this->addSaveMessage($invalidKeys);
         return new RedirectResponse($this->uriBuilder->buildUriFromRoute(self::MODULE_IDENTIFIER));
@@ -68,9 +68,16 @@ class SettingsModuleController
         );
     }
 
-    protected function isAdmin(): bool
+    protected function getAccess(): SettingAccess
     {
-        return (bool)$this->context->getPropertyFromAspect('backend.user', 'isAdmin', false);
+        $backendUser = $GLOBALS['BE_USER'] ?? null;
+        $access = SettingAccess::User;
+        if ($backendUser instanceof BackendUserAuthentication && $backendUser->isSystemMaintainer()) {
+            $access = SettingAccess::SystemMaintainer;
+        } elseif ($backendUser instanceof BackendUserAuthentication && $backendUser->isAdmin()) {
+            $access = SettingAccess::Admin;
+        }
+        return $access;
     }
 
     protected function translate(string $key): string
