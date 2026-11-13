@@ -7,9 +7,6 @@ namespace In2code\Sitescore\Domain\Settings;
 use In2code\Sitescore\Domain\Model\Setting;
 use In2code\Sitescore\Utility\ConfigurationUtility;
 
-/**
- * All settings that can be overwritten in the backend module "AI > Sitescore"
- */
 class SettingsDefinition
 {
     /**

@@ -57,16 +57,15 @@ class SettingsModuleController
 
     protected function addSaveMessage(array $invalidKeys): void
     {
-        $message = new FlashMessage($this->translate('message.saved'), '', ContextualFeedbackSeverity::OK, true);
+        $text = $this->translate('message.saved');
+        $severity = ContextualFeedbackSeverity::OK;
         if ($invalidKeys !== []) {
-            $message = new FlashMessage(
-                $this->translate('message.invalid') . ' ' . implode(', ', $invalidKeys),
-                '',
-                ContextualFeedbackSeverity::WARNING,
-                true
-            );
+            $text = $this->translate('message.invalid') . ' ' . implode(', ', $invalidKeys);
+            $severity = ContextualFeedbackSeverity::WARNING;
         }
-        $this->flashMessageService->getMessageQueueByIdentifier()->addMessage($message);
+        $this->flashMessageService->getMessageQueueByIdentifier()->addMessage(
+            new FlashMessage($text, '', $severity, true)
+        );
     }
 
     protected function isAdmin(): bool

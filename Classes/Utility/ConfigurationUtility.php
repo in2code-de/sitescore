@@ -16,9 +16,6 @@ class ConfigurationUtility
     public const ENVIRONMENT_API_KEY = 'GOOGLE_API_KEY';
     public const ENVIRONMENT_GEMINI_MODEL = 'GOOGLE_GEMINI_MODEL';
 
-    /**
-     * Settings from the backend module overrule the extension configuration
-     */
     public static function getConfigurationByKey(string $key): string
     {
         $value = self::getModuleSettingByKey($key);

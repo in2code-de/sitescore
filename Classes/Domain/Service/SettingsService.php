@@ -35,17 +35,20 @@ class SettingsService
         $rows = [];
         foreach ($this->getAccessibleSettings($isAdmin) as $setting) {
             $moduleValue = $moduleSettings[$setting->key] ?? '';
-            $fallbackValue = $this->getFallbackValue($setting);
+            $extensionConfigurationValue = ConfigurationUtility::getExtensionConfigurationByKey($setting->key);
+            $isPassword = $setting->isPassword();
             $rows[] = [
                 'key' => $setting->key,
                 'type' => $setting->type,
                 'options' => $setting->options,
                 'environmentVariable' => $setting->environmentVariable,
                 'lockedByEnvironment' => $setting->isLockedByEnvironment(),
-                'value' => $setting->isPassword() ? '' : $moduleValue,
-                'fallback' => $setting->isPassword() ? '' : $fallbackValue,
-                'source' => $this->getSource($setting, $moduleValue),
-                'maskedValue' => $setting->isPassword() ? $this->getMaskedEffectiveValue($setting, $moduleValue) : '',
+                'value' => $isPassword ? '' : $moduleValue,
+                'fallback' => $isPassword ? '' : $this->getFallbackValue($setting, $extensionConfigurationValue),
+                'source' => $this->getSource($setting, $moduleValue, $extensionConfigurationValue),
+                'maskedValue' => $isPassword
+                    ? $this->getMaskedEffectiveValue($setting, $moduleValue ?: $extensionConfigurationValue)
+                    : '',
             ];
         }
         return $rows;
@@ -114,33 +117,31 @@ class SettingsService
     /**
      * "0" is a valid value (e.g. for booleans), so only an empty string falls back to the default
      */
-    protected function getFallbackValue(Setting $setting): string
+    protected function getFallbackValue(Setting $setting, string $extensionConfigurationValue): string
     {
-        $value = ConfigurationUtility::getExtensionConfigurationByKey($setting->key);
+        $value = $extensionConfigurationValue;
         if ($value === '') {
             $value = $setting->default;
         }
         return $value;
     }
 
-    protected function getSource(Setting $setting, string $moduleValue): string
+    protected function getSource(Setting $setting, string $moduleValue, string $extensionConfigurationValue): string
     {
         $source = self::SOURCE_NONE;
         if ($setting->isLockedByEnvironment()) {
             $source = self::SOURCE_ENVIRONMENT;
         } elseif ($moduleValue !== '') {
             $source = self::SOURCE_MODULE;
-        } elseif (ConfigurationUtility::getExtensionConfigurationByKey($setting->key) !== '') {
+        } elseif ($extensionConfigurationValue !== '') {
             $source = self::SOURCE_EXTENSION_CONFIGURATION;
         }
         return $source;
     }
 
-    protected function getMaskedEffectiveValue(Setting $setting, string $moduleValue): string
+    protected function getMaskedEffectiveValue(Setting $setting, string $storedValue): string
     {
-        $value = (string)getenv($setting->environmentVariable)
-            ?: $moduleValue
-            ?: ConfigurationUtility::getExtensionConfigurationByKey($setting->key);
+        $value = (string)getenv($setting->environmentVariable) ?: $storedValue;
         $masked = '';
         if (strlen($value) >= self::MINIMUM_SECRET_LENGTH_FOR_HINT) {
             $masked = self::MASK . substr($value, -self::VISIBLE_SECRET_CHARACTERS);
